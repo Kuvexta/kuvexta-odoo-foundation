@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "source_repository": "Kuvexta/odoo-community-tools",
+  "source_commit": "d1fbe61ebf4f8255272b9fcf915014052a6bcaa7",
+  "source_architecture_pr": 207,
+  "module": "kt_payment_gateway_core",
+  "source_tree_sha": "ea794353026e9caeb81818b0aa48b4a2593dce9f",
+  "target_tree_sha": "ea794353026e9caeb81818b0aa48b4a2593dce9f",
+  "exact_tree_match": true,
+  "license_preserved": "LGPL-3",
+  "source_deleted": false,
+  "verified_files": 7,
+  "dependency_closure": ["sale_management"],
+  "advanced_operations_bundled": false
+}
