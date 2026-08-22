@@ -3,13 +3,14 @@
   "odoo_series": "19.0",
   "source_repository": "Kuvexta/odoo-community-tools",
   "source_clearance_pr": 186,
+  "source_clearance_merge": "6f8dfbe8946b3414557a3c62b4571d6c6f839c80",
   "repository_role": "foundation",
   "planned_modules": {
-    "kt_camera_scan_widget": "blocked_third_party_notices",
-    "kt_label_printing": "ready_after_source_clearance",
-    "kt_marketplace_core_utils": "ready_after_source_clearance",
-    "kt_sales_channel": "ready_after_source_clearance",
-    "kt_toggle_override": "ready_after_source_clearance"
+    "kt_camera_scan_widget": "wave_2_third_party_notices_ready",
+    "kt_label_printing": "migration_requested",
+    "kt_marketplace_core_utils": "migration_requested",
+    "kt_sales_channel": "migration_requested",
+    "kt_toggle_override": "migration_requested"
   },
   "wave_1": [
     "kt_label_printing",
@@ -17,8 +18,9 @@
     "kt_sales_channel",
     "kt_toggle_override"
   ],
+  "wave_2": ["kt_camera_scan_widget"],
   "deferred": {
-    "kt_camera_scan_widget": "Requires verified third-party inventory/notices for Undecaf/ZBar assets before physical copy."
+    "kt_camera_scan_widget": "Third-party inventory/notices are now recorded in source PR #186; copy separately so zbar.wasm and both vendored LICENSE files are verified explicitly."
   },
   "rules": {
     "may_depend_on_professional": false,
