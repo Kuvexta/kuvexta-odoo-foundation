@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Force-update en upgrade: el seed original usa noupdate=1.
+     Alinea facebook/tiktok/homecenter a manual (diseño cross_cutting). -->
+<odoo>
+    <record id="kt_channel_facebook" model="kt.sales.channel">
+        <field name="channel_type">manual</field>
+    </record>
+    <record id="kt_channel_tiktok" model="kt.sales.channel">
+        <field name="channel_type">manual</field>
+    </record>
+    <record id="kt_channel_homecenter" model="kt.sales.channel">
+        <field name="channel_type">manual</field>
+    </record>
+</odoo>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- company_id es opcional a propósito ("vacío = disponible en todas
+         las compañías", ver help del campo) — mismo patrón "compartido
+         si está vacío" que kt_product_multi_barcode: un canal atado a
+         una compañía puntual no debe verse desde otra, pero uno global
+         (company_id vacío) sigue visible en todas. -->
+    <record id="rule_kt_sales_channel_company" model="ir.rule">
+        <field name="name">KT Sales Channel: aislar por compañía</field>
+        <field name="model_id" ref="model_kt_sales_channel"/>
+        <field name="domain_force">
+            ['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]
+        </field>
+        <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+</odoo>

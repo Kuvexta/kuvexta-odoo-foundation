@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="kt_channel_local" model="kt.sales.channel">
+        <field name="name">Local (POS)</field>
+        <field name="code">local</field>
+        <field name="channel_type">manual</field>
+        <field name="sequence">10</field>
+    </record>
+    <record id="kt_channel_ecommerce" model="kt.sales.channel">
+        <field name="name">Ecommerce propio</field>
+        <field name="code">ecommerce</field>
+        <field name="channel_type">manual</field>
+        <field name="sequence">20</field>
+    </record>
+    <record id="kt_channel_phone" model="kt.sales.channel">
+        <field name="name">Teléfono</field>
+        <field name="code">phone</field>
+        <field name="channel_type">manual</field>
+        <field name="sequence">30</field>
+    </record>
+    <record id="kt_channel_email" model="kt.sales.channel">
+        <field name="name">Correo electrónico</field>
+        <field name="code">email</field>
+        <field name="channel_type">manual</field>
+        <field name="sequence">40</field>
+    </record>
+    <record id="kt_channel_whatsapp" model="kt.sales.channel">
+        <field name="name">WhatsApp</field>
+        <field name="code">whatsapp</field>
+        <field name="channel_type">manual</field>
+        <field name="sequence">50</field>
+    </record>
+    <record id="kt_channel_mercadolibre" model="kt.sales.channel">
+        <field name="name">Mercado Libre</field>
+        <field name="code">mercadolibre</field>
+        <field name="channel_type">integrated</field>
+        <field name="business_vertical">retail</field>
+        <field name="sequence">60</field>
+    </record>
+    <record id="kt_channel_falabella" model="kt.sales.channel">
+        <field name="name">Falabella / Linio</field>
+        <field name="code">falabella</field>
+        <field name="channel_type">integrated</field>
+        <field name="business_vertical">retail</field>
+        <field name="sequence">70</field>
+    </record>
+    <record id="kt_channel_exito" model="kt.sales.channel">
+        <field name="name">Éxito</field>
+        <field name="code">exito</field>
+        <field name="channel_type">integrated</field>
+        <field name="business_vertical">retail</field>
+        <field name="sequence">80</field>
+    </record>
+    <!-- facebook / tiktok / homecenter: manual (sin order_import v1;
+         ver disenos_completos/kt_marketplace_cross_cutting/05–06). -->
+    <record id="kt_channel_facebook" model="kt.sales.channel">
+        <field name="name">Facebook</field>
+        <field name="code">facebook</field>
+        <field name="channel_type">manual</field>
+        <field name="business_vertical">retail</field>
+        <field name="sequence">90</field>
+    </record>
+    <record id="kt_channel_tiktok" model="kt.sales.channel">
+        <field name="name">TikTok Shop</field>
+        <field name="code">tiktok</field>
+        <field name="channel_type">manual</field>
+        <field name="business_vertical">retail</field>
+        <field name="sequence">100</field>
+    </record>
+    <record id="kt_channel_homecenter" model="kt.sales.channel">
+        <field name="name">Homecenter</field>
+        <field name="code">homecenter</field>
+        <field name="channel_type">manual</field>
+        <field name="business_vertical">retail</field>
+        <field name="sequence">110</field>
+    </record>
+    <!-- Código técnico "rappi" ya está referenciado en varios lugares
+         (kt_marketplace_order_import/controllers/main.py, tests,
+         kt_product_multi_barcode) — se mantiene sin cambios para no
+         romper nada que ya funciona; solo se aclara el NOMBRE
+         (doc 13 §0: este es Rappi RESTAURANTES, vertical comida — no
+         RappiTienda, que sería un canal nuevo aparte si se construye
+         algún día). -->
+    <record id="kt_channel_rappi" model="kt.sales.channel">
+        <field name="name">Rappi Restaurantes</field>
+        <field name="code">rappi</field>
+        <field name="channel_type">integrated</field>
+        <field name="business_vertical">food_delivery</field>
+        <field name="sequence">120</field>
+    </record>
+    <!-- DiDi Food (doc 13 §2/§0): segundo canal food_delivery, mismo
+         núcleo genérico que Rappi Restaurantes — módulo propio
+         kt_marketplace_didifood. -->
+    <record id="kt_channel_didifood" model="kt.sales.channel">
+        <field name="name">DiDi Food</field>
+        <field name="code">didifood</field>
+        <field name="channel_type">integrated</field>
+        <field name="business_vertical">food_delivery</field>
+        <field name="sequence">130</field>
+    </record>
+</odoo>
