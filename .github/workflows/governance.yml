@@ -10,7 +10,7 @@ permissions:
   contents: read
 
 jobs:
-  manifest:
+  foundation-boundary:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
@@ -19,3 +19,5 @@ jobs:
           python-version: "3.11"
       - name: Validate migration manifest
         run: python3 -m json.tool MIGRATION_MANIFEST.json >/dev/null
+      - name: Validate Foundation repository boundary
+        run: python3 scripts/validate_foundation_repository.py
