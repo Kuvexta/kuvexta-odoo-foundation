@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "source_repository": "Kuvexta/odoo-community-tools",
+  "source_commit": "6f8dfbe8946b3414557a3c62b4571d6c6f839c80",
+  "source_clearance_pr": 186,
+  "module": "kt_toggle_override",
+  "source_tree_sha": "7bd3b62e972fec32c8ff5279abe34eafe7ca1498",
+  "target_tree_sha": "7bd3b62e972fec32c8ff5279abe34eafe7ca1498",
+  "exact_tree_match": true,
+  "license_preserved": "LGPL-3",
+  "source_deleted": false,
+  "verified_files": 17
+}
