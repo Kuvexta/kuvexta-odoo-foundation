@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "requested_at": "2026-08-21",
+  "source_repository": "Kuvexta/odoo-community-tools",
+  "source_commit": "6f8dfbe8946b3414557a3c62b4571d6c6f839c80",
+  "source_clearance_pr": 186,
+  "modules": [
+    "kt_label_printing",
+    "kt_marketplace_core_utils",
+    "kt_sales_channel",
+    "kt_toggle_override"
+  ],
+  "preserve_license": true,
+  "delete_source_after_copy": false
+}
