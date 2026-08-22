@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- company_id se deriva de warehouse_id.company_id (siempre presente
+         — una bodega de Odoo siempre pertenece a una compañía) — sin
+         esta regla, un usuario con acceso a varias compañías vería/
+         editaría excepciones de características de bodegas de TODAS las
+         compañías al mismo tiempo. -->
+    <record id="rule_kt_toggle_override_company" model="ir.rule">
+        <field name="name">KT Toggle Override: aislar por compañía</field>
+        <field name="model_id" ref="model_kt_toggle_override"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+</odoo>
