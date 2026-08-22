@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_sale_order_pivot_kt_sales_channel" model="ir.ui.view">
+        <field name="name">sale.order.pivot.kt.sales.channel</field>
+        <field name="model">sale.order</field>
+        <field name="arch" type="xml">
+            <pivot string="Ventas por canal" sample="1">
+                <field name="kt_sales_channel_id" type="row"/>
+                <field name="date_order" interval="month" type="col"/>
+                <field name="amount_total" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="view_sale_order_graph_kt_sales_channel" model="ir.ui.view">
+        <field name="name">sale.order.graph.kt.sales.channel</field>
+        <field name="model">sale.order</field>
+        <field name="arch" type="xml">
+            <graph string="Ventas por canal" type="bar" sample="1">
+                <field name="kt_sales_channel_id"/>
+                <field name="amount_total" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="action_kt_sales_channel_report" model="ir.actions.act_window">
+        <field name="name">Por canal</field>
+        <field name="res_model">sale.order</field>
+        <field name="view_mode">pivot,graph,list</field>
+        <field name="view_ids" eval="[(5, 0, 0),
+            (0, 0, {'view_mode': 'pivot', 'view_id': ref('view_sale_order_pivot_kt_sales_channel')}),
+            (0, 0, {'view_mode': 'graph', 'view_id': ref('view_sale_order_graph_kt_sales_channel')})]"/>
+        <field name="domain">[('state', 'in', ('sale', 'done'))]</field>
+        <field name="context">{'search_default_groupby_kt_sales_channel': 1}</field>
+    </record>
+
+    <menuitem id="menu_kt_sales_channel_report"
+              name="Por canal"
+              parent="sale.menu_sale_report"
+              action="action_kt_sales_channel_report"
+              sequence="40"/>
+</odoo>

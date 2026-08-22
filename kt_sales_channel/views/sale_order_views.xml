@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Ancla verificada contra addons/sale/views/sale_order_views.xml
+         (rama 19.0): group[@name='partner_details']/field[@name='partner_id']. -->
+    <record id="view_order_form_kt_sales_channel" model="ir.ui.view">
+        <field name="name">sale.order.form.kt.sales.channel</field>
+        <field name="model">sale.order</field>
+        <field name="mode">extension</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='partner_details']/field[@name='partner_id']"
+                   position="after">
+                <field name="kt_sales_channel_id"
+                       options="{'no_create': True}"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_order_tree_kt_sales_channel" model="ir.ui.view">
+        <field name="name">sale.order.list.kt.sales.channel</field>
+        <field name="model">sale.order</field>
+        <field name="mode">extension</field>
+        <field name="inherit_id" ref="sale.sale_order_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="kt_sales_channel_id" optional="show"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_sales_order_filter_kt_sales_channel" model="ir.ui.view">
+        <field name="name">sale.order.search.kt.sales.channel</field>
+        <field name="model">sale.order</field>
+        <field name="mode">extension</field>
+        <field name="inherit_id" ref="sale.view_sales_order_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//search" position="inside">
+                <field name="kt_sales_channel_id"/>
+                <filter string="Canal de venta" name="groupby_kt_sales_channel"
+                        context="{'group_by': 'kt_sales_channel_id'}"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

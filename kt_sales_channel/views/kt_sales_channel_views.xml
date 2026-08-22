@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_kt_sales_channel_list" model="ir.ui.view">
+        <field name="name">kt.sales.channel.list</field>
+        <field name="model">kt.sales.channel</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="sequence" widget="handle"/>
+                <field name="image_128" widget="image" class="oe_avatar"
+                       options="{'size': [24, 24]}" nolabel="1"/>
+                <field name="name"/>
+                <field name="code"/>
+                <field name="channel_type"/>
+                <field name="business_vertical" optional="show"/>
+                <field name="responsible_user_id" optional="show"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+                <field name="active"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_kt_sales_channel_form" model="ir.ui.view">
+        <field name="name">kt.sales.channel.form</field>
+        <field name="model">kt.sales.channel</field>
+        <field name="arch" type="xml">
+            <form string="Canal de venta">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_sale_orders" type="object"
+                                class="oe_stat_button" icon="fa-shopping-cart">
+                            <field name="sale_order_count" widget="statinfo"
+                                   string="Pedidos"/>
+                        </button>
+                    </div>
+                    <widget name="web_ribbon" title="Archivado"
+                            bg_color="text-bg-danger"
+                            invisible="active"/>
+                    <field name="image_128" widget="image" class="oe_avatar"
+                           options="{'preview_image': 'image_128'}"/>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="code"/>
+                            <field name="channel_type"/>
+                            <field name="business_vertical"/>
+                            <field name="responsible_user_id"/>
+                        </group>
+                        <group>
+                            <field name="sequence"/>
+                            <field name="active"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_kt_sales_channel_search" model="ir.ui.view">
+        <field name="name">kt.sales.channel.search</field>
+        <field name="model">kt.sales.channel</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="code"/>
+                <field name="responsible_user_id"/>
+                <filter string="Manuales" name="manual"
+                        domain="[('channel_type', '=', 'manual')]"/>
+                <filter string="Integrados" name="integrated"
+                        domain="[('channel_type', '=', 'integrated')]"/>
+                <filter string="Mis canales" name="my_channels"
+                        domain="[('responsible_user_id', '=', uid)]"/>
+                <filter string="Retail" name="vertical_retail"
+                        domain="[('business_vertical', 'in', ('retail', 'both'))]"/>
+                <filter string="Restaurantes / domicilios" name="vertical_food"
+                        domain="[('business_vertical', 'in', ('food_delivery', 'both'))]"/>
+                <filter string="Archivados" name="inactive"
+                        domain="[('active', '=', False)]"/>
+                <group>
+                    <filter string="Responsable" name="group_responsible"
+                            context="{'group_by': 'responsible_user_id'}"/>
+                    <filter string="Vertical" name="group_vertical"
+                            context="{'group_by': 'business_vertical'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_kt_sales_channel" model="ir.actions.act_window">
+        <field name="name">Canales de venta</field>
+        <field name="res_model">kt.sales.channel</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="menu_kt_sales_channel"
+              name="Canales de venta"
+              parent="sale.menu_sale_config"
+              action="action_kt_sales_channel"
+              sequence="50"/>
+</odoo>

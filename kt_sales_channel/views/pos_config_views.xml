@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Ancla verificada contra addons/point_of_sale/views/pos_config_view.xml
+         (rama 19.0): page[@name='configuration']. -->
+    <record id="pos_config_view_form_kt_sales_channel" model="ir.ui.view">
+        <field name="name">pos.config.form.kt.sales.channel</field>
+        <field name="model">pos.config</field>
+        <field name="mode">extension</field>
+        <field name="inherit_id" ref="point_of_sale.pos_config_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='configuration']" position="inside">
+                <group string="Kuvexta: canal de venta">
+                    <field name="kt_sales_channel_id"
+                           options="{'no_create': True}"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>
