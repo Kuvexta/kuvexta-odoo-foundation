@@ -1,20 +1,32 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "odoo_series": "19.0",
   "source_repository": "Kuvexta/odoo-community-tools",
+  "source_clearance_pr": 186,
   "repository_role": "foundation",
   "planned_modules": {
-    "kt_camera_scan_widget": "planned_mixed_third_party_review",
-    "kt_label_printing": "planned_history_review",
-    "kt_marketplace_core_utils": "planned_context_review",
-    "kt_sales_channel": "planned_context_review",
-    "kt_toggle_override": "planned_context_review"
+    "kt_camera_scan_widget": "blocked_third_party_notices",
+    "kt_label_printing": "ready_after_source_clearance",
+    "kt_marketplace_core_utils": "ready_after_source_clearance",
+    "kt_sales_channel": "ready_after_source_clearance",
+    "kt_toggle_override": "ready_after_source_clearance"
+  },
+  "wave_1": [
+    "kt_label_printing",
+    "kt_marketplace_core_utils",
+    "kt_sales_channel",
+    "kt_toggle_override"
+  ],
+  "deferred": {
+    "kt_camera_scan_widget": "Requires verified third-party inventory/notices for Undecaf/ZBar assets before physical copy."
   },
   "rules": {
     "may_depend_on_professional": false,
     "may_depend_on_community_agpl": false,
     "may_depend_on_vendor_adapters": false,
     "may_depend_on_internal": false,
-    "default_target_license": "LGPL-3"
+    "default_target_license": "LGPL-3",
+    "license_change_during_migration_allowed": false,
+    "third_party_notices_required_when_embedded": true
   }
 }
