@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "source_repository": "Kuvexta/odoo-community-tools",
+  "source_commit": "6f8dfbe8946b3414557a3c62b4571d6c6f839c80",
+  "source_clearance_pr": 186,
+  "preserve_license": true,
+  "delete_source_after_copy": false,
+  "modules": {
+    "kt_label_printing": "6996925aaecbffe725738ed10caf15140bb9fe0e",
+    "kt_marketplace_core_utils": "d79ac3023f6d94ae9f583a2320a0b3acbf230e96",
+    "kt_sales_channel": "106756392e1893fe8d2616b6558bf2509e617228",
+    "kt_toggle_override": "7bd3b62e972fec32c8ff5279abe34eafe7ca1498"
+  },
+  "validation": {
+    "expected_license": "LGPL-3",
+    "require_exact_blob_sha": true,
+    "require_governance_ci": true
+  }
+}
