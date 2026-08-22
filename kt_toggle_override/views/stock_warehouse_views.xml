@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_warehouse_form_kt_toggle_override" model="ir.ui.view">
+        <field name="name">stock.warehouse.form.kt.toggle.override</field>
+        <field name="model">stock.warehouse</field>
+        <field name="mode">extension</field>
+        <field name="inherit_id" ref="stock.view_warehouse"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="inside">
+                <notebook>
+                    <page string="Excepciones Kuvexta" name="kt_toggle_overrides">
+                        <div class="text-muted mb8">
+                            Valores forzados SOLO para esta bodega, distintos del
+                            configurado a nivel de compañía en Inventario → Ajustes →
+                            «Kuvexta: flujos avanzados». Sin filas acá, esta bodega
+                            usa el valor de la compañía, igual que si este módulo no
+                            estuviera instalado.
+                        </div>
+                        <field name="kt_toggle_override_ids">
+                            <list editable="bottom">
+                                <field name="toggle_key"/>
+                                <field name="value"/>
+                            </list>
+                        </field>
+                    </page>
+                </notebook>
+            </xpath>
+        </field>
+    </record>
+</odoo>
