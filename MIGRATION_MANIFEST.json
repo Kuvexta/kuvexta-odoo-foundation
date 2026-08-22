@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "odoo_series": "19.0",
+  "source_repository": "Kuvexta/odoo-community-tools",
+  "repository_role": "foundation",
+  "planned_modules": {
+    "kt_camera_scan_widget": "planned_mixed_third_party_review",
+    "kt_label_printing": "planned_history_review",
+    "kt_marketplace_core_utils": "planned_context_review",
+    "kt_sales_channel": "planned_context_review",
+    "kt_toggle_override": "planned_context_review"
+  },
+  "rules": {
+    "may_depend_on_professional": false,
+    "may_depend_on_community_agpl": false,
+    "may_depend_on_vendor_adapters": false,
+    "may_depend_on_internal": false,
+    "default_target_license": "LGPL-3"
+  }
+}
