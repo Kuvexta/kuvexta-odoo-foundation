@@ -21,3 +21,70 @@ jobs:
         run: python3 -m json.tool MIGRATION_MANIFEST.json >/dev/null
       - name: Validate Foundation repository boundary
         run: python3 scripts/validate_foundation_repository.py
+
+  migrate-wave-1:
+    if: github.event_name == 'pull_request' && github.head_ref == 'migration/foundation-wave-1'
+    needs: foundation-boundary
+    permissions:
+      contents: write
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout staging branch
+        uses: actions/checkout@v4
+        with:
+          ref: migration/foundation-wave-1
+          fetch-depth: 0
+
+      - name: Read migration request
+        id: request
+        shell: bash
+        run: |
+          set -euo pipefail
+          SOURCE_COMMIT=$(python3 -c 'import json; print(json.load(open("MIGRATION_REQUEST.json"))["source_commit"])')
+          echo "source_commit=$SOURCE_COMMIT" >> "$GITHUB_OUTPUT"
+
+      - name: Checkout cleared source snapshot
+        uses: actions/checkout@v4
+        with:
+          repository: Kuvexta/odoo-community-tools
+          ref: ${{ steps.request.outputs.source_commit }}
+          path: _source
+          sparse-checkout: |
+            kt_label_printing
+            kt_marketplace_core_utils
+            kt_sales_channel
+            kt_toggle_override
+          sparse-checkout-cone-mode: true
+          persist-credentials: false
+
+      - name: Copy and validate exact Foundation wave
+        shell: bash
+        run: |
+          set -euo pipefail
+          for module in \
+            kt_label_printing \
+            kt_marketplace_core_utils \
+            kt_sales_channel \
+            kt_toggle_override
+          do
+            test -f "_source/$module/__manifest__.py"
+            rm -rf "$module"
+            cp -a "_source/$module" "$module"
+          done
+          rm -rf _source
+          python3 scripts/validate_foundation_repository.py
+
+      - name: Commit migrated modules when needed
+        shell: bash
+        run: |
+          set -euo pipefail
+          if git diff --quiet -- . ':!MIGRATION_REQUEST.json' && \
+             test -z "$(git ls-files --others --exclude-standard | grep '^kt_' || true)"; then
+            echo "Foundation wave already synchronized."
+            exit 0
+          fi
+          git config user.name "kuvexta-migration-bot"
+          git config user.email "dev@kuvexta.com"
+          git add kt_label_printing kt_marketplace_core_utils kt_sales_channel kt_toggle_override
+          git commit -m "migration: copy Foundation wave 1 from ${{ steps.request.outputs.source_commit }}"
+          git push origin HEAD:migration/foundation-wave-1
