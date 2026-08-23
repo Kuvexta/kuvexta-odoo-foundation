@@ -8,7 +8,7 @@
   "source_payment_split_merge": "d1fbe61ebf4f8255272b9fcf915014052a6bcaa7",
   "repository_role": "foundation",
   "planned_modules": {
-    "kt_camera_scan_widget": "wave_2_third_party_notices_ready",
+    "kt_camera_scan_widget": "physically_migrated_without_relicense",
     "kt_label_printing": "physically_migrated_without_relicense",
     "kt_marketplace_core_utils": "physically_migrated_without_relicense",
     "kt_payment_gateway_core": "physically_migrated_without_relicense",
@@ -16,6 +16,7 @@
     "kt_toggle_override": "physically_migrated_without_relicense"
   },
   "physical_modules": [
+    "kt_camera_scan_widget",
     "kt_label_printing",
     "kt_marketplace_core_utils",
     "kt_payment_gateway_core",
@@ -23,6 +24,7 @@
     "kt_toggle_override"
   ],
   "migration_receipts": {
+    "kt_camera_scan_widget": "MIGRATION_RECEIPT_CAMERA_SCAN_WIDGET_V1.json",
     "kt_label_printing": "MIGRATION_RECEIPT_LABEL_V1.json",
     "kt_marketplace_core_utils": "MIGRATION_RECEIPT_CORE_UTILS_V1.json",
     "kt_payment_gateway_core": "MIGRATION_RECEIPT_PAYMENT_GATEWAY_CORE_V1.json",
@@ -37,9 +39,7 @@
   ],
   "wave_2": ["kt_camera_scan_widget"],
   "wave_3": ["kt_payment_gateway_core"],
-  "deferred": {
-    "kt_camera_scan_widget": "Third-party inventory/notices are recorded in source PR #186; copy separately so zbar.wasm and both vendored LICENSE files are verified explicitly."
-  },
+  "deferred": {},
   "rules": {
     "may_depend_on_professional": false,
     "may_depend_on_community_agpl": false,
@@ -52,6 +52,6 @@
   "notes": [
     "physical_modules is the machine-readable inventory of addons already copied into Foundation.",
     "A module physically present in the repository must be marked physically_migrated_without_relicense and have a migration receipt.",
-    "kt_camera_scan_widget remains deferred until its binary and third-party notices are copied and verified exactly."
+    "kt_camera_scan_widget was migrated with exact source tree equality; zbar.wasm and both vendored license files were verified by Git blob SHA before the final copy."
   ]
 }

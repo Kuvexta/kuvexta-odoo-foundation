@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "source_repository": "Kuvexta/odoo-community-tools",
+  "source_branch": "19.0",
+  "source_commit": "311834cf20620e4587f14a7f1381f1de9354c67b",
+  "source_architecture_pr": 186,
+  "module": "kt_camera_scan_widget",
+  "source_tree_sha": "fea7105f8f18da6eefac3b173bd783a9049566d3",
+  "target_tree_sha": "fea7105f8f18da6eefac3b173bd783a9049566d3",
+  "exact_tree_match": true,
+  "license_preserved": "LGPL-3",
+  "relicensing": false,
+  "source_deleted": false,
+  "verified_files": 27,
+  "dependency_closure": ["web"],
+  "third_party_notices_preserved": true,
+  "third_party_components": [
+    {
+      "name": "@undecaf/barcode-detector-polyfill",
+      "version": "0.9.23",
+      "license": "MIT",
+      "license_blob_sha": "1eba7c0a7b0de7fa94aabb195360d778b3067935"
+    },
+    {
+      "name": "@undecaf/zbar-wasm",
+      "version": "0.9.16",
+      "license": "LGPL-2.1+",
+      "license_blob_sha": "8000a6faacf471c537530805ab29523c7732e11a",
+      "wasm_path": "static/src/js/lib/zbar-wasm/zbar.wasm",
+      "wasm_blob_sha": "f127b3eb74a55842990691a0bc285e82f2fda0d0",
+      "wasm_size": 239017,
+      "wasm_mode": "100755"
+    }
+  ],
+  "binary_verification": {
+    "method": "npm package 0.9.16 + exact Git blob SHA verification in isolated staging PR; final subtree reconstructed from exact blobs",
+    "staging_pr": 9,
+    "staging_merged": false
+  }
+}
