@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "odoo_series": "19.0",
   "source_repository": "Kuvexta/odoo-community-tools",
   "source_clearance_pr": 186,
@@ -9,11 +9,25 @@
   "repository_role": "foundation",
   "planned_modules": {
     "kt_camera_scan_widget": "wave_2_third_party_notices_ready",
-    "kt_label_printing": "migration_requested",
-    "kt_marketplace_core_utils": "migration_requested",
-    "kt_payment_gateway_core": "migration_requested",
-    "kt_sales_channel": "migration_requested",
-    "kt_toggle_override": "migration_requested"
+    "kt_label_printing": "physically_migrated_without_relicense",
+    "kt_marketplace_core_utils": "physically_migrated_without_relicense",
+    "kt_payment_gateway_core": "physically_migrated_without_relicense",
+    "kt_sales_channel": "physically_migrated_without_relicense",
+    "kt_toggle_override": "physically_migrated_without_relicense"
+  },
+  "physical_modules": [
+    "kt_label_printing",
+    "kt_marketplace_core_utils",
+    "kt_payment_gateway_core",
+    "kt_sales_channel",
+    "kt_toggle_override"
+  ],
+  "migration_receipts": {
+    "kt_label_printing": "MIGRATION_RECEIPT_LABEL_V1.json",
+    "kt_marketplace_core_utils": "MIGRATION_RECEIPT_CORE_UTILS_V1.json",
+    "kt_payment_gateway_core": "MIGRATION_RECEIPT_PAYMENT_GATEWAY_CORE_V1.json",
+    "kt_sales_channel": "MIGRATION_RECEIPT_SALES_CHANNEL_V1.json",
+    "kt_toggle_override": "MIGRATION_RECEIPT_TOGGLE_V1.json"
   },
   "wave_1": [
     "kt_label_printing",
@@ -24,7 +38,7 @@
   "wave_2": ["kt_camera_scan_widget"],
   "wave_3": ["kt_payment_gateway_core"],
   "deferred": {
-    "kt_camera_scan_widget": "Third-party inventory/notices are now recorded in source PR #186; copy separately so zbar.wasm and both vendored LICENSE files are verified explicitly."
+    "kt_camera_scan_widget": "Third-party inventory/notices are recorded in source PR #186; copy separately so zbar.wasm and both vendored LICENSE files are verified explicitly."
   },
   "rules": {
     "may_depend_on_professional": false,
@@ -34,5 +48,10 @@
     "default_target_license": "LGPL-3",
     "license_change_during_migration_allowed": false,
     "third_party_notices_required_when_embedded": true
-  }
+  },
+  "notes": [
+    "physical_modules is the machine-readable inventory of addons already copied into Foundation.",
+    "A module physically present in the repository must be marked physically_migrated_without_relicense and have a migration receipt.",
+    "kt_camera_scan_widget remains deferred until its binary and third-party notices are copied and verified exactly."
+  ]
 }
