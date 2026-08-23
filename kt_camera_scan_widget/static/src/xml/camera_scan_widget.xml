@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="kt_camera_scan_widget.CameraScanWidget">
+        <div class="kt_camera_scan_widget">
+            <div class="kt_camera_scan_video_wrapper position-relative">
+                <video t-ref="kt_camera_video" class="kt_camera_scan_video w-100" autoplay="autoplay" playsinline="playsinline" muted="muted"/>
+                <div t-if="state.status === 'starting'" class="kt_camera_scan_overlay text-white text-center p-3">
+                    Iniciando cámara…
+                </div>
+                <div t-if="state.status === 'unsupported'" class="kt_camera_scan_overlay text-white text-center p-3">
+                    Este navegador no permite acceder a la cámara. Use la entrada manual.
+                </div>
+                <div t-if="state.status === 'error'" class="kt_camera_scan_overlay text-white text-center p-3">
+                    No se pudo abrir la cámara: <t t-esc="state.errorMessage"/>
+                </div>
+                <div t-if="state.status === 'running' and not state.hasEngine" class="kt_camera_scan_overlay text-white text-center p-3">
+                    Este navegador no tiene decodificación automática disponible — use la entrada manual.
+                </div>
+                <button t-if="state.hasTorch" type="button" class="btn btn-light kt_camera_scan_torch_btn position-absolute" t-on-click="toggleTorch">
+                    <i class="fa fa-bolt"/>
+                </button>
+            </div>
+            <div class="kt_camera_scan_manual_entry d-flex gap-2 mt-3">
+                <input type="text"
+                       class="o_input flex-grow-1"
+                       placeholder="Código dañado o borroso: escríbalo aquí"
+                       t-att-value="state.manualCode"
+                       t-on-input="(ev) => this.state.manualCode = ev.target.value"
+                       t-on-keydown.stop="(ev) => ev.key === 'Enter' ? this.submitManualCode() : null"/>
+                <button type="button" class="btn btn-primary" t-on-click="submitManualCode">Usar</button>
+            </div>
+        </div>
+    </t>
+
+    <t t-name="kt_camera_scan_widget.CameraScanDialog">
+        <Dialog title="'Escanear con cámara'" size="'md'" contentClass="'kt_camera_scan_dialog'">
+            <KtCameraScanWidget
+                facingMode="props.facingMode"
+                beepEnabled="props.beepEnabled"
+                onDetected.bind="onDetected"
+            />
+        </Dialog>
+    </t>
+</templates>

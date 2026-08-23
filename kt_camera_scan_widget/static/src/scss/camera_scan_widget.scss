@@ -1,0 +1,28 @@
+.kt_camera_scan_video_wrapper {
+    background-color: #000;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.kt_camera_scan_video {
+    display: block;
+    max-height: 60vh;
+    object-fit: cover;
+}
+
+.kt_camera_scan_overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.55);
+}
+
+.kt_camera_scan_torch_btn {
+    top: 8px;
+    right: 8px;
+}

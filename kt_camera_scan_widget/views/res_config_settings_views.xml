@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Nueva app de Ajustes independiente (mismo patrón "<xpath expr="//form"
+         position="inside"><app>...</app>" ya usado por Compras/Ventas/etc. en
+         el core, verificado contra addons/purchase/views/res_config_settings_views.xml)
+         — este módulo no depende de ninguna otra app, así que no hay un
+         bloque existente natural donde insertarse. -->
+    <record id="view_res_config_settings_kt_camera_scan_widget" model="ir.ui.view">
+        <field name="name">res.config.settings.kt.camera.scan.widget</field>
+        <field name="model">res.config.settings</field>
+        <field name="mode">extension</field>
+        <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="inside">
+                <app data-string="ScanFlow Camera" string="ScanFlow Camera" name="kt_camera_scan_widget">
+                    <block title="Escaneo por cámara" name="kt_camera_scan_setting_container">
+                        <setting id="kt_camera_scan_enabled_setting"
+                                 string="Habilitar escaneo por cámara"
+                                 help="Muestra el botón 'Escanear con cámara' en los documentos que lo soportan (ej. Compras/Ventas/Facturación con ScanFlow instalado).">
+                            <field name="kt_camera_scan_enabled"/>
+                        </setting>
+                        <setting id="kt_camera_scan_beep_enabled_setting"
+                                 string="Sonido de confirmación al escanear">
+                            <field name="kt_camera_scan_beep_enabled"/>
+                        </setting>
+                        <setting id="kt_camera_scan_default_facing_setting"
+                                 string="Cámara por defecto">
+                            <field name="kt_camera_scan_default_facing"/>
+                        </setting>
+                    </block>
+                </app>
+            </xpath>
+        </field>
+    </record>
+</odoo>
