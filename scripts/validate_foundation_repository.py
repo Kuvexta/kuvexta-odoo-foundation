@@ -1,11 +1,5 @@
 #!/usr/bin/env python3
-"""Validate Kuvexta Foundation repository boundaries.
-
-The validator is intentionally stdlib-only. It checks the migration manifest and,
-when Odoo addons are present at repository root, verifies that only planned
-Foundation modules are present, that their manifest license stays LGPL-3 during
-migration, and that no internal dependency points to a module outside Foundation.
-"""
+"""Validate Kuvexta Foundation repository boundaries and migration-state drift."""
 
 from __future__ import annotations
 
@@ -19,6 +13,7 @@ MANIFEST_PATH = ROOT / "MIGRATION_MANIFEST.json"
 LOGGER = logging.getLogger(__name__)
 
 IGNORED_DIRS = {".git", ".github", "scripts"}
+PHYSICAL_STATE = "physically_migrated_without_relicense"
 
 
 def load_policy() -> dict:
@@ -46,15 +41,38 @@ def discover_addons() -> dict[str, dict]:
 def main() -> int:
     logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
     policy = load_policy()
-    planned = set(policy.get("planned_modules", {}))
+    planned_states = policy.get("planned_modules", {})
+    planned = set(planned_states)
+    declared_physical = set(policy.get("physical_modules", []))
+    receipts = policy.get("migration_receipts", {})
     addons = discover_addons()
+    actual_physical = set(addons)
     errors: list[str] = []
 
-    unexpected = sorted(set(addons) - planned)
+    unexpected = sorted(actual_physical - planned)
     if unexpected:
         errors.append("Unexpected addons in Foundation: " + ", ".join(unexpected))
 
+    if declared_physical != actual_physical:
+        missing = sorted(actual_physical - declared_physical)
+        stale = sorted(declared_physical - actual_physical)
+        if missing:
+            errors.append("physical_modules missing present addons: " + ", ".join(missing))
+        if stale:
+            errors.append("physical_modules declares absent addons: " + ", ".join(stale))
+
     for module, manifest in sorted(addons.items()):
+        if planned_states.get(module) != PHYSICAL_STATE:
+            errors.append(
+                f"{module}: addon is physically present but planned_modules state is "
+                f"{planned_states.get(module)!r}, expected {PHYSICAL_STATE!r}"
+            )
+        receipt = receipts.get(module)
+        if not receipt:
+            errors.append(f"{module}: physical migration requires a receipt entry")
+        elif not (ROOT / receipt).is_file():
+            errors.append(f"{module}: migration receipt does not exist: {receipt}")
+
         license_name = manifest.get("license")
         if license_name != "LGPL-3":
             errors.append(
@@ -69,11 +87,14 @@ def main() -> int:
                     "planned in Foundation"
                 )
 
-    camera_state = policy.get("planned_modules", {}).get("kt_camera_scan_widget")
-    if "kt_camera_scan_widget" in addons and camera_state == "blocked_third_party_notices":
+    for module, state in sorted(planned_states.items()):
+        if state == PHYSICAL_STATE and module not in actual_physical:
+            errors.append(f"{module}: marked physically migrated but addon is absent")
+
+    camera_state = planned_states.get("kt_camera_scan_widget")
+    if "kt_camera_scan_widget" in addons and camera_state != PHYSICAL_STATE:
         errors.append(
-            "kt_camera_scan_widget is physically present while its third-party notices "
-            "gate is still blocked"
+            "kt_camera_scan_widget is physically present without completed migration state"
         )
 
     if errors:
@@ -82,9 +103,8 @@ def main() -> int:
         return 1
 
     LOGGER.info(
-        "Foundation boundary valid: %d addon(s) present, %d planned.",
+        "Foundation boundary valid: %d physical addon(s), manifest and receipts synchronized.",
         len(addons),
-        len(planned),
     )
     return 0
 
