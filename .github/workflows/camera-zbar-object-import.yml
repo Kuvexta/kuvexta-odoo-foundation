@@ -1,21 +1,25 @@
 name: Temporary Camera ZBar Object Import
 
 on:
-  push:
-    branches:
-      - migration/camera-zbar-staging-v1
+  pull_request:
+    branches: [19.0]
+    types: [opened, synchronize, reopened]
 
 permissions:
   contents: write
 
 jobs:
   import-zbar-objects:
-    if: github.actor != 'github-actions[bot]'
+    if: >-
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      github.event.pull_request.head.ref == 'migration/camera-zbar-staging-v1' &&
+      github.actor != 'github-actions[bot]'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
           ref: migration/camera-zbar-staging-v1
+          fetch-depth: 0
 
       - name: Fetch and verify upstream ZBar package objects
         shell: bash
