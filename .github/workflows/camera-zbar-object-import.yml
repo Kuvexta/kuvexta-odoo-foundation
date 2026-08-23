@@ -1,0 +1,65 @@
+name: Temporary Camera ZBar Object Import
+
+on:
+  push:
+    branches:
+      - migration/camera-zbar-staging-v1
+
+permissions:
+  contents: write
+
+jobs:
+  import-zbar-objects:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: migration/camera-zbar-staging-v1
+
+      - name: Fetch and verify upstream ZBar package objects
+        shell: bash
+        run: |
+          set -euo pipefail
+          work="$RUNNER_TEMP/zbar-object-import"
+          rm -rf "$work"
+          mkdir -p "$work"
+          cd "$work"
+          tarball=$(npm pack @undecaf/zbar-wasm@0.9.16 --silent)
+          tar -xzf "$tarball"
+
+          copy_by_blob_sha() {
+            expected="$1"
+            basename="$2"
+            destination="$3"
+            found=""
+            while IFS= read -r -d '' candidate; do
+              if [ "$(git -C "$GITHUB_WORKSPACE" hash-object "$candidate")" = "$expected" ]; then
+                found="$candidate"
+                break
+              fi
+            done < <(find package -type f -name "$basename" -print0)
+            if [ -z "$found" ]; then
+              echo "::error::No upstream $basename matched expected Git blob $expected"
+              exit 1
+            fi
+            mkdir -p "$(dirname "$GITHUB_WORKSPACE/$destination")"
+            cp "$found" "$GITHUB_WORKSPACE/$destination"
+            actual=$(git -C "$GITHUB_WORKSPACE" hash-object "$GITHUB_WORKSPACE/$destination")
+            test "$actual" = "$expected"
+          }
+
+          copy_by_blob_sha 8000a6faacf471c537530805ab29523c7732e11a LICENSE .object-import/zbar-wasm/LICENSE
+          copy_by_blob_sha 92ca094d0758b6acc2a23d229478565518d32861 main.js .object-import/zbar-wasm/main.js
+          copy_by_blob_sha f127b3eb74a55842990691a0bc285e82f2fda0d0 zbar.wasm .object-import/zbar-wasm/zbar.wasm
+          chmod 755 "$GITHUB_WORKSPACE/.object-import/zbar-wasm/zbar.wasm"
+
+      - name: Materialize verified objects in Foundation object database
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add .object-import/zbar-wasm
+          git commit -m "chore: stage verified ZBar objects"
+          git push origin HEAD:migration/camera-zbar-staging-v1
