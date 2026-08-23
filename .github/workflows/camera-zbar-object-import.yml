@@ -38,7 +38,7 @@ jobs:
             destination="$3"
             found=""
             while IFS= read -r -d '' candidate; do
-              if [ "$(git -C "$GITHUB_WORKSPACE" hash-object "$candidate")" = "$expected" ]; then
+              if [ "$(git hash-object "$candidate")" = "$expected" ]; then
                 found="$candidate"
                 break
               fi
@@ -49,7 +49,7 @@ jobs:
             fi
             mkdir -p "$(dirname "$GITHUB_WORKSPACE/$destination")"
             cp "$found" "$GITHUB_WORKSPACE/$destination"
-            actual=$(git -C "$GITHUB_WORKSPACE" hash-object "$GITHUB_WORKSPACE/$destination")
+            actual=$(git hash-object "$GITHUB_WORKSPACE/$destination")
             test "$actual" = "$expected"
           }
 
