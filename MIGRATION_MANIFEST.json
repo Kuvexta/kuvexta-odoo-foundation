@@ -1,5 +1,5 @@
 {
-  "schema_version": 3,
+  "schema_version": 4,
   "odoo_series": "19.0",
   "source_repository": "Kuvexta/odoo-community-tools",
   "source_clearance_pr": 186,
@@ -45,13 +45,26 @@
     "may_depend_on_community_agpl": false,
     "may_depend_on_vendor_adapters": false,
     "may_depend_on_internal": false,
+    "optional_cross_repository_dependencies_allowed": false,
     "default_target_license": "LGPL-3",
     "license_change_during_migration_allowed": false,
     "third_party_notices_required_when_embedded": true
   },
+  "receipt_contract": {
+    "source_repository_must_match": true,
+    "module_must_match": true,
+    "source_and_target_tree_must_match": true,
+    "exact_tree_match_must_be_true": true,
+    "receipt_license_must_match_manifest": true,
+    "source_deleted_must_be_false_for_initial_migration": true,
+    "relicensing_true_forbidden": true,
+    "schema_1_receipts_may_omit_relicensing_field": true,
+    "new_receipts_must_explicitly_set_relicensing_false": true
+  },
   "notes": [
     "physical_modules is the machine-readable inventory of addons already copied into Foundation.",
-    "A module physically present in the repository must be marked physically_migrated_without_relicense and have a migration receipt.",
+    "A module physically present in the repository must be marked physically_migrated_without_relicense and have a migration receipt whose evidence matches the physical addon.",
+    "Foundation is a lowest reusable layer: neither hard nor hidden optional dependencies may point upward to Professional, Community/AGPL, Vendor Adapters, Internal or Review modules.",
     "kt_camera_scan_widget was migrated with exact source tree equality; zbar.wasm and both vendored license files were verified by Git blob SHA before the final copy."
   ]
 }
