@@ -8,6 +8,8 @@
   "source_payment_split_merge": "d1fbe61ebf4f8255272b9fcf915014052a6bcaa7",
   "source_camera_split_pr": 222,
   "source_camera_split_merge": "95840400aaec2af40946fd64577febde52dc7e35",
+  "source_qr_split_pr": 223,
+  "source_qr_split_merge": "2762964ead87e8314b17d3c2e477d9a5124cf56b",
   "repository_role": "foundation",
   "planned_modules": {
     "kt_camera_scan_website_base": "physically_migrated_without_relicense",
@@ -15,6 +17,7 @@
     "kt_label_printing": "physically_migrated_without_relicense",
     "kt_marketplace_core_utils": "physically_migrated_without_relicense",
     "kt_payment_gateway_core": "physically_migrated_without_relicense",
+    "kt_product_public_qr": "physically_migrated_without_relicense",
     "kt_sales_channel": "physically_migrated_without_relicense",
     "kt_toggle_override": "physically_migrated_without_relicense"
   },
@@ -24,6 +27,7 @@
     "kt_label_printing",
     "kt_marketplace_core_utils",
     "kt_payment_gateway_core",
+    "kt_product_public_qr",
     "kt_sales_channel",
     "kt_toggle_override"
   ],
@@ -33,6 +37,7 @@
     "kt_label_printing": "MIGRATION_RECEIPT_LABEL_V1.json",
     "kt_marketplace_core_utils": "MIGRATION_RECEIPT_CORE_UTILS_V1.json",
     "kt_payment_gateway_core": "MIGRATION_RECEIPT_PAYMENT_GATEWAY_CORE_V1.json",
+    "kt_product_public_qr": "MIGRATION_RECEIPT_PRODUCT_PUBLIC_QR_V1.json",
     "kt_sales_channel": "MIGRATION_RECEIPT_SALES_CHANNEL_V1.json",
     "kt_toggle_override": "MIGRATION_RECEIPT_TOGGLE_V1.json"
   },
@@ -45,6 +50,7 @@
   "wave_2": ["kt_camera_scan_widget"],
   "wave_3": ["kt_payment_gateway_core"],
   "wave_4": ["kt_camera_scan_website_base"],
+  "wave_5": ["kt_product_public_qr"],
   "deferred": {},
   "rules": {
     "may_depend_on_professional": false,
@@ -72,6 +78,7 @@
     "A module physically present in the repository must be marked physically_migrated_without_relicense and have a migration receipt whose evidence matches the physical addon.",
     "Foundation is a lowest reusable layer: neither hard nor hidden optional dependencies may point upward to Professional, Community/AGPL, Vendor Adapters, Internal or Review modules.",
     "kt_camera_scan_widget was migrated with exact source tree equality; zbar.wasm and both vendored license files were verified by Git blob SHA before the final copy.",
-    "kt_camera_scan_website_base was created after ADR-9 with a new public contract and migrated as an exact LGPL-3 tree; it depends only on official website_sale and the admitted Foundation camera widget."
+    "kt_camera_scan_website_base was created after ADR-9 with a new public contract and migrated as an exact LGPL-3 tree; it depends only on official website_sale and the admitted Foundation camera widget.",
+    "kt_product_public_qr 19.0.2.0.0 was admitted after ADR-10 as an exact LGPL-3 tree. It owns the neutral public token/page/report contract and depends only on official Odoo plus kt_label_printing; alternate barcodes remain in an explicit Professional bridge."
   ]
 }

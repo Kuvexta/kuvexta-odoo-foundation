@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_kt_public_qr_png_export_wizard_form" model="ir.ui.view">
+        <field name="name">kt.public.qr.png.export.wizard.form</field>
+        <field name="model">kt.public.qr.png.export.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="product_tmpl_ids" widget="many2many_tags"/>
+                </group>
+                <p class="text-muted">
+                    Se generará un archivo PNG (300x300) por cada
+                    producto seleccionado, empaquetados todos en un
+                    solo archivo ZIP para descargar.
+                </p>
+                <footer>
+                    <button name="action_generate_zip" string="Generar ZIP"
+                            type="object" class="btn-primary"/>
+                    <button string="Cancelar" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_open_kt_png_export_wizard" model="ir.actions.act_window">
+        <field name="name">Exportar QR como PNG (masivo)</field>
+        <field name="res_model">kt.public.qr.png.export.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_kt_public_qr_png_export_wizard_form"/>
+        <field name="target">new</field>
+    </record>
+
+    <!-- Acción de servidor enganchada al menú "Acción" de la lista de
+         productos — mismo patrón exacto que usa Odoo para su propio
+         "Imprimir etiquetas" (verificado contra el código fuente
+         real: `binding_model_id` + `state='code'` llamando a un
+         método que abre el asistente con los productos ya
+         seleccionados). -->
+    <record id="action_server_kt_png_export" model="ir.actions.server">
+        <field name="name">Exportar QR como PNG (masivo)</field>
+        <field name="model_id" ref="product.model_product_template"/>
+        <field name="binding_model_id" ref="product.model_product_template"/>
+        <field name="binding_view_types">list</field>
+        <field name="state">code</field>
+        <field name="code">
+if records:
+    action = records.action_open_kt_png_export_wizard()
+        </field>
+    </record>
+
+</odoo>

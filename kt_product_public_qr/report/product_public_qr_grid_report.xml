@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Celda individual — una etiqueta pequeña, reutilizada por los
+         3 formatos de cuadrícula. Contenido deliberadamente mínimo
+         (nombre + QR + referencia), a diferencia del reporte de una
+         sola etiqueta grande (que sí muestra variantes y códigos
+         alternos completos) — una celda de cuadrícula es del tamaño
+         de una etiqueta de precio normal, no cabe información
+         detallada ahí. -->
+    <template id="report_kt_public_qr_grid_cell">
+        <td class="text-center align-middle" style="border: 1px solid #999; padding: 2mm;">
+            <t t-if="product">
+                <div style="font-size:8px; font-weight:bold; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" t-esc="product.name"/>
+                <img t-if="product.kt_public_qr_barcode_src"
+                     t-att-src="product.kt_public_qr_barcode_src"
+                     style="width:18mm;height:18mm;"/>
+                <div t-if="product.default_code" style="font-size:7px; color:#666;" t-esc="product.default_code"/>
+            </t>
+        </td>
+    </template>
+
+    <!-- Cuadrícula genérica, parametrizada por columns/rows — el
+         mismo patrón que usa el reporte nativo de Odoo
+         (product.report_productlabel), simplificado porque aquí solo
+         hay UNA lista plana de productos (con copias ya repetidas),
+         no la lógica de "varios códigos por producto" del nativo. -->
+    <template id="report_kt_public_qr_grid">
+        <t t-call="web.html_container">
+            <t t-foreach="range(page_numbers)" t-as="page">
+                <div class="page" style="padding: 10mm 5mm;">
+                    <table class="my-0" style="width:100%; border-collapse:collapse;">
+                        <t t-foreach="range(rows)" t-as="row">
+                            <tr>
+                                <t t-foreach="range(columns)" t-as="column">
+                                    <t t-set="label_index" t-value="page * rows * columns + row * columns + column"/>
+                                    <t t-set="product" t-value="labels[label_index] if label_index &lt; len(labels) else None"/>
+                                    <t t-call="kt_product_public_qr.report_kt_public_qr_grid_cell"/>
+                                </t>
+                            </tr>
+                        </t>
+                    </table>
+                </div>
+            </t>
+        </t>
+    </template>
+
+    <!-- Celda cuadrada — formato recomendado (04/08/2026), diseñado
+         desde cero para QR: QR bastante más grande (30mm, contra los
+         18mm de los formatos heredados de código de barras lineal) y
+         texto más legible, aprovechando que la celda es más grande
+         (3 columnas x 5 filas en vez de 4x12). -->
+    <template id="report_kt_public_qr_grid_cell_square">
+        <td class="text-center align-middle" style="border: 1px solid #999; padding: 3mm;">
+            <t t-if="product">
+                <div style="font-size:11px; font-weight:bold; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" t-esc="product.name"/>
+                <img t-if="product.kt_public_qr_barcode_src"
+                     t-att-src="product.kt_public_qr_barcode_src"
+                     style="width:30mm;height:30mm;"/>
+                <div t-if="product.default_code" style="font-size:9px; color:#666;" t-esc="product.default_code"/>
+            </t>
+        </td>
+    </template>
+
+    <!-- Cuadrícula del formato cuadrado — duplicada de la genérica de
+         arriba en vez de parametrizar dinámicamente qué celda llamar
+         (QWeb no permite un `t-call` con destino calculado en tiempo
+         de ejecución, solo referencias XML fijas) — la única
+         diferencia real es qué celda se llama. -->
+    <template id="report_kt_public_qr_grid_square">
+        <t t-call="web.html_container">
+            <t t-foreach="range(page_numbers)" t-as="page">
+                <div class="page" style="padding: 10mm 5mm;">
+                    <table class="my-0" style="width:100%; border-collapse:collapse;">
+                        <t t-foreach="range(rows)" t-as="row">
+                            <tr>
+                                <t t-foreach="range(columns)" t-as="column">
+                                    <t t-set="label_index" t-value="page * rows * columns + row * columns + column"/>
+                                    <t t-set="product" t-value="labels[label_index] if label_index &lt; len(labels) else None"/>
+                                    <t t-call="kt_product_public_qr.report_kt_public_qr_grid_cell_square"/>
+                                </t>
+                            </tr>
+                        </t>
+                    </table>
+                </div>
+            </t>
+        </t>
+    </template>
+
+    <!-- Celda con tamaño DINÁMICO — a diferencia de las demás
+         (con medidas fijas escritas en la plantilla), esta lee el
+         ancho/alto de la etiqueta y del QR desde el tamaño que el
+         usuario haya configurado (`kt.label.size`, en el módulo
+         compartido `kt_label_printing`), usando `t-attf-style` para
+         construir el CSS en tiempo de renderizado. -->
+    <template id="report_kt_public_qr_grid_cell_custom">
+        <td class="text-center align-middle"
+            t-attf-style="border: 1px solid #999; padding: 2mm; width:{{ kt_label_width_mm }}mm; height:{{ kt_label_height_mm }}mm;">
+            <t t-if="product">
+                <div style="font-size:10px; font-weight:bold; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" t-esc="product.name"/>
+                <img t-if="product.kt_public_qr_barcode_src"
+                     t-att-src="product.kt_public_qr_barcode_src"
+                     t-attf-style="width:{{ kt_qr_size_mm }}mm;height:{{ kt_qr_size_mm }}mm;"/>
+                <div t-if="product.default_code" style="font-size:8px; color:#666;" t-esc="product.default_code"/>
+            </t>
+        </td>
+    </template>
+
+    <template id="report_kt_public_qr_grid_custom">
+        <t t-call="web.html_container">
+            <t t-foreach="range(page_numbers)" t-as="page">
+                <div class="page" style="padding: 10mm 5mm;">
+                    <table class="my-0" style="width:100%; border-collapse:collapse;">
+                        <t t-foreach="range(rows)" t-as="row">
+                            <tr>
+                                <t t-foreach="range(columns)" t-as="column">
+                                    <t t-set="label_index" t-value="page * rows * columns + row * columns + column"/>
+                                    <t t-set="product" t-value="labels[label_index] if label_index &lt; len(labels) else None"/>
+                                    <t t-call="kt_product_public_qr.report_kt_public_qr_grid_cell_custom"/>
+                                </t>
+                            </tr>
+                        </t>
+                    </table>
+                </div>
+            </t>
+        </t>
+    </template>
+
+    <!-- Sin `t-set` de columns/rows literales aquí, a diferencia de
+         los demás formatos — para el tamaño personalizado, columns/
+         rows/page_numbers ya vienen calculados desde Python (ver
+         `_prepare_kt_public_qr_grid_data`), porque dependen del
+         tamaño que el usuario haya elegido, no de un valor fijo
+         conocido de antemano. -->
+    <template id="report_kt_qr_custom_document">
+        <t t-call="kt_product_public_qr.report_kt_public_qr_grid_custom"/>
+    </template>
+
+    <template id="report_kt_qr_square_document">
+        <t t-set="columns" t-value="3"/>
+        <t t-set="rows" t-value="5"/>
+        <t t-call="kt_product_public_qr.report_kt_public_qr_grid_square"/>
+    </template>
+
+    <template id="report_kt_qr_2x7_document">
+        <t t-set="columns" t-value="2"/>
+        <t t-set="rows" t-value="7"/>
+        <t t-call="kt_product_public_qr.report_kt_public_qr_grid"/>
+    </template>
+
+    <template id="report_kt_qr_4x7_document">
+        <t t-set="columns" t-value="4"/>
+        <t t-set="rows" t-value="7"/>
+        <t t-call="kt_product_public_qr.report_kt_public_qr_grid"/>
+    </template>
+
+    <template id="report_kt_qr_4x12_document">
+        <t t-set="columns" t-value="4"/>
+        <t t-set="rows" t-value="12"/>
+        <t t-call="kt_product_public_qr.report_kt_public_qr_grid"/>
+    </template>
+
+    <record id="report_product_public_qr_custom" model="ir.actions.report">
+        <field name="name">QR público - Tamaño personalizado</field>
+        <field name="model">product.template</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">kt_product_public_qr.report_kt_qr_custom_document</field>
+        <field name="print_report_name">'Etiquetas QR públicas'</field>
+    </record>
+
+    <record id="report_product_public_qr_square" model="ir.actions.report">
+        <field name="name">QR público - Cuadrado (recomendado)</field>
+        <field name="model">product.template</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">kt_product_public_qr.report_kt_qr_square_document</field>
+        <field name="print_report_name">'Etiquetas QR públicas'</field>
+    </record>
+
+    <record id="report_product_public_qr_2x7" model="ir.actions.report">
+        <field name="name">QR público (2 x 7)</field>
+        <field name="model">product.template</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">kt_product_public_qr.report_kt_qr_2x7_document</field>
+        <field name="print_report_name">'Etiquetas QR públicas 2x7'</field>
+    </record>
+
+    <record id="report_product_public_qr_4x7" model="ir.actions.report">
+        <field name="name">QR público (4 x 7)</field>
+        <field name="model">product.template</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">kt_product_public_qr.report_kt_qr_4x7_document</field>
+        <field name="print_report_name">'Etiquetas QR públicas 4x7'</field>
+    </record>
+
+    <record id="report_product_public_qr_4x12" model="ir.actions.report">
+        <field name="name">QR público (4 x 12)</field>
+        <field name="model">product.template</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">kt_product_public_qr.report_kt_qr_4x12_document</field>
+        <field name="print_report_name">'Etiquetas QR públicas 4x12'</field>
+    </record>
+
+</odoo>

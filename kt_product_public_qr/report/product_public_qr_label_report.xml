@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_report_product_public_qr" model="ir.actions.report">
+        <field name="name">Etiqueta QR de producto (agrupador)</field>
+        <field name="model">product.template</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">kt_product_public_qr.report_product_public_qr</field>
+        <field name="report_file">kt_product_public_qr.report_product_public_qr</field>
+        <field name="print_report_name">'QR - %s' % (object.name)</field>
+        <field name="binding_model_id" ref="product.model_product_template"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <template id="report_product_public_qr">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="tmpl">
+                <div class="page" style="width:7cm; height:5cm; padding:0.3cm; text-align:center;">
+                    <div style="font-size:11px; font-weight:bold; overflow:hidden; white-space:nowrap;">
+                        <t t-esc="tmpl.name"/>
+                    </div>
+                    <img t-if="tmpl.kt_public_qr_barcode_src"
+                         t-att-src="tmpl.kt_public_qr_barcode_src"
+                         style="width:3cm;height:3cm;margin-top:4px;"/>
+                    <div style="font-size:8px; color:#555; margin-top:2px;">
+                        Escanee para ver info del producto
+                    </div>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

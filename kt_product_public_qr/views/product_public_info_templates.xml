@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="product_public_info_page" name="Ficha pública de producto">
+        <t t-call="website.layout">
+            <div class="container mt-5 mb-5">
+                <div class="row">
+                    <div class="col-md-4 text-center mb-4">
+                        <img t-if="product.image_1920"
+                             t-att-src="'/producto/%s/imagen' % product.kt_public_access_token"
+                             class="img-fluid rounded shadow-sm"
+                             style="max-height:320px;"
+                             t-att-alt="product.name"/>
+                        <div t-else="" class="text-muted">
+                            (Sin imagen)
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <h2 t-esc="product.name"/>
+                        <p t-if="product.default_code" class="text-muted">
+                            Referencia: <span t-esc="product.default_code"/>
+                        </p>
+
+                        <!-- Un producto con UNA sola variante: se
+                             muestra directo, sin tabla de variantes
+                             (más simple para el caso más común). -->
+                        <p t-if="single_variant and single_variant.barcode">
+                            <strong>Código de barras oficial:</strong>
+                            <span t-esc="single_variant.barcode"/>
+                        </p>
+
+                        <!-- Punto de extensión estable para capas superiores.
+                             Foundation no conoce modelos Professional. -->
+                        <div id="kt_public_qr_single_variant_extension"/>
+
+                        <!-- Varias variantes: una sección por cada
+                             una, mostrando en qué se diferencia y su
+                             código oficial. Las extensiones pueden
+                             agregar datos sin acoplar Foundation. -->
+                        <t t-if="len(product.product_variant_ids) > 1">
+                            <h4 class="mt-4">Presentaciones disponibles</h4>
+                            <div t-foreach="product.product_variant_ids" t-as="variant"
+                                 class="border rounded p-3 mb-3">
+                                <h5 t-esc="variant.display_name"/>
+                                <p t-if="variant.barcode" class="mb-1">
+                                    <strong>Código de barras oficial:</strong>
+                                    <span t-esc="variant.barcode"/>
+                                </p>
+                                <p t-else="" class="text-muted mb-1">
+                                    Sin código de barras oficial registrado.
+                                </p>
+                                <div class="kt-public-qr-variant-extension"/>
+                            </div>
+                        </t>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>
