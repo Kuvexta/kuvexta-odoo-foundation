@@ -1,0 +1,40 @@
+{
+  "schema_version": 2,
+  "module": "kt_product_public_qr",
+  "source_repository": "Kuvexta/odoo-community-tools",
+  "source_branch": "19.0",
+  "source_commit": "2762964ead87e8314b17d3c2e477d9a5124cf56b",
+  "source_architecture_pr": 223,
+  "source_tree_sha": "f2d96b54089b4d27f3dd7ad65ec63d50306bf570",
+  "target_repository": "Kuvexta/kuvexta-odoo-foundation",
+  "target_branch": "19.0",
+  "target_tree_sha": "f2d96b54089b4d27f3dd7ad65ec63d50306bf570",
+  "copy_mode": "exact_tree",
+  "verified_files": 31,
+  "exact_tree_match": true,
+  "effective_license": "LGPL-3",
+  "license_preserved": "LGPL-3",
+  "relicensing": false,
+  "source_deleted": false,
+  "dependency_closure": {
+    "foundation": ["kt_label_printing"],
+    "official_odoo": ["product", "website"],
+    "professional": [],
+    "community_agpl": [],
+    "vendor": [],
+    "internal": [],
+    "review": []
+  },
+  "provenance": {
+    "ownership": "kuvexta",
+    "evidence": "strong",
+    "clearance": "foundation_only",
+    "decision": "ADR-10"
+  },
+  "optional_integrations": [],
+  "notes": [
+    "Exact copy from Source PR #223. The hard dependency and runtime lookup of kt_product_multi_barcode were removed before migration.",
+    "The addon retains tokens, public image/page, official barcodes by variant, label grids, PDF and PNG under LGPL-3.",
+    "Professional alternate codes and Webkul printing are separate addons; no upward or vendor dependency is present."
+  ]
+}
