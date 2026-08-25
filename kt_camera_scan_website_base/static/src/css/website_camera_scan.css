@@ -1,0 +1,39 @@
+.kt_camera_website_base {
+    position: fixed;
+    right: 1rem;
+    bottom: 1rem;
+    z-index: 1040;
+}
+
+.kt_camera_website_open {
+    align-items: center;
+    display: inline-flex;
+    height: 3.25rem;
+    justify-content: center;
+    padding: 0;
+    width: 3.25rem;
+}
+
+.kt_camera_website_viewport {
+    min-height: 12rem;
+}
+
+.kt_camera_website_video {
+    display: block;
+    max-height: 55vh;
+    object-fit: cover;
+}
+
+.kt_camera_website_status {
+    align-items: center;
+    background: rgba(0, 0, 0, 0.58);
+    display: flex;
+    inset: 0;
+    justify-content: center;
+    position: absolute;
+}
+
+.kt_camera_website_status.is-running {
+    background: transparent;
+    pointer-events: none;
+}
