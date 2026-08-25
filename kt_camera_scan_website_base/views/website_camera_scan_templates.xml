@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="website_layout_camera_scan_base"
+              inherit_id="website.layout"
+              name="KT Camera Scan - public website base">
+        <xpath expr="//div[@id='wrapwrap']" position="inside">
+            <t t-set="kt_camera_company" t-value="request.website.company_id"/>
+            <div t-if="not kt_camera_company or kt_camera_company.kt_camera_scan_enabled"
+                 class="kt_camera_website_base o_not_editable d-print-none"
+                 t-att-data-facing="kt_camera_company.kt_camera_scan_default_facing if kt_camera_company else 'environment'"
+                 t-att-data-beep="'1' if (not kt_camera_company or kt_camera_company.kt_camera_scan_beep_enabled) else '0'">
+                <button type="button"
+                        class="btn btn-primary rounded-circle shadow kt_camera_website_open"
+                        aria-label="Escanear código de producto"
+                        title="Escanear código de producto">
+                    <i class="fa fa-camera" aria-hidden="true"/>
+                </button>
+
+                <div class="modal fade kt_camera_website_dialog"
+                     tabindex="-1"
+                     aria-labelledby="kt_camera_website_title"
+                     aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 id="kt_camera_website_title" class="modal-title">
+                                    Escanear producto
+                                </h5>
+                                <button type="button"
+                                        class="btn-close"
+                                        data-bs-dismiss="modal"
+                                        aria-label="Cerrar"/>
+                            </div>
+                            <div class="modal-body">
+                                <div class="kt_camera_website_viewport position-relative rounded overflow-hidden bg-dark">
+                                    <video class="kt_camera_website_video w-100"
+                                           autoplay="autoplay"
+                                           playsinline="playsinline"
+                                           muted="muted"/>
+                                    <div class="kt_camera_website_status text-white text-center p-3"
+                                         role="status"
+                                         aria-live="polite">
+                                        Listo para iniciar.
+                                    </div>
+                                    <button type="button"
+                                            class="btn btn-light btn-sm kt_camera_website_torch position-absolute top-0 end-0 m-2 d-none"
+                                            aria-label="Activar o desactivar linterna"
+                                            title="Linterna">
+                                        <i class="fa fa-flash" aria-hidden="true"/>
+                                    </button>
+                                </div>
+                                <div class="input-group mt-3">
+                                    <input type="text"
+                                           maxlength="128"
+                                           autocomplete="off"
+                                           class="form-control kt_camera_website_manual"
+                                           placeholder="Escriba o escanee el código"/>
+                                    <button type="button"
+                                            class="btn btn-secondary kt_camera_website_submit">
+                                        Buscar
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button"
+                                        class="btn btn-secondary"
+                                        data-bs-dismiss="modal">
+                                    Cerrar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </xpath>
+    </template>
+</odoo>

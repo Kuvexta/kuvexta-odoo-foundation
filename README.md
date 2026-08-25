@@ -17,4 +17,7 @@ Licensing is declared per Odoo module. A repository-level assumption must never 
 
 ## Migration status
 
-This repository has been initialized as part of the controlled split from `Kuvexta/odoo-community-tools`. Modules will only be moved after dependency, provenance and commercialization gates pass.
+`MIGRATION_MANIFEST.json` is the authoritative physical inventory. Every addon
+present here passed dependency/provenance gates and has an exact-tree receipt.
+The camera Website base is intentionally limited to official product barcodes;
+its multi-barcode integration lives as an explicit bridge in Professional.
