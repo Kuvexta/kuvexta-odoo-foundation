@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "receipt_type": "post_migration_change",
+  "module": "kt_label_printing",
+  "base_migration_receipt": "MIGRATION_RECEIPT_LABEL_V1.json",
+  "base_tree_sha": "6996925aaecbffe725738ed10caf15140bb9fe0e",
+  "target_repository": "Kuvexta/kuvexta-odoo-foundation",
+  "target_branch": "19.0",
+  "target_tree_sha": "8a218e34221137c709893693460e3fa8a48d1b0b",
+  "effective_license": "LGPL-3",
+  "scope": "documentation_governance",
+  "behavior_change": false,
+  "license_change": false,
+  "vendor_source_change": false,
+  "relicensing": false,
+  "changed_files": [
+    "MANUAL_ES.md",
+    "README.rst",
+    "__manifest__.py"
+  ]
+}

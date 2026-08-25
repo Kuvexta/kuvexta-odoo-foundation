@@ -80,3 +80,14 @@ Pon el ancho real del rollo en "Ancho de la hoja", y un número
 grande (ej. 2000mm) en "Alto de la hoja" — el sistema no necesita
 saber el largo real del rollo, solo genera tantas etiquetas seguidas
 como necesites, una tras otra en esa "hoja" larga y angosta.
+## Autoridad documental y mejora continua
+
+- Código y operación de este addon: `Kuvexta/kuvexta-odoo-foundation@19.0`.
+- Investigación, diseños, FAQ/PQR, incidentes y lecciones transversales:
+  `Kuvexta/kuvexta-odoo-knowledge` mediante `INDEX.yaml` y `CATALOG.yaml`.
+- Composición instalable y rollback: bundle exacto de
+  `Kuvexta/kuvexta-odoo-integration`.
+
+La copia retenida en Source es evidencia congelada. Toda mejora se propone aquí
+y debe actualizar manual, pruebas y comprobante del árbol cuando corresponda.
+Los ensayos externos aplicables no se consideran cerrados por una prueba local.

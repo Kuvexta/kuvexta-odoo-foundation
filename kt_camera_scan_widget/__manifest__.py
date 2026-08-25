@@ -10,7 +10,7 @@
     "sin lógica de negocio propia",
     "author": "Kuvexta",
     "maintainers": ["Kuvexta"],
-    "website": "https://github.com/Kuvexta/odoo-community-tools",
+    "website": "https://github.com/Kuvexta/kuvexta-odoo-foundation",
     "license": "LGPL-3",
     "development_status": "Alpha",
     "depends": ["web"],

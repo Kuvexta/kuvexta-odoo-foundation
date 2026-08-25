@@ -20,7 +20,7 @@ Foundation no autoriza a relicenciar otras capas.
 """,
     "author": "Kuvexta",
     "maintainers": ["Kuvexta"],
-    "website": "https://github.com/Kuvexta/odoo-community-tools",
+    "website": "https://github.com/Kuvexta/kuvexta-odoo-foundation",
     "license": "LGPL-3",
     "development_status": "Beta",
     "depends": ["sale_management"],

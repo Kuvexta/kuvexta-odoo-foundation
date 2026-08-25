@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "receipt_type": "post_migration_change",
+  "module": "kt_toggle_override",
+  "base_migration_receipt": "MIGRATION_RECEIPT_TOGGLE_V1.json",
+  "base_tree_sha": "7bd3b62e972fec32c8ff5279abe34eafe7ca1498",
+  "target_repository": "Kuvexta/kuvexta-odoo-foundation",
+  "target_branch": "19.0",
+  "target_tree_sha": "0d46fca39858886d03bfb60319ee094de1eab059",
+  "effective_license": "LGPL-3",
+  "scope": "documentation_governance",
+  "behavior_change": false,
+  "license_change": false,
+  "vendor_source_change": false,
+  "relicensing": false,
+  "changed_files": [
+    "MANUAL_ES.md",
+    "README.rst",
+    "__manifest__.py"
+  ]
+}

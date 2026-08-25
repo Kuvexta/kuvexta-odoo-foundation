@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "receipt_type": "post_migration_change",
+  "module": "kt_camera_scan_widget",
+  "base_migration_receipt": "MIGRATION_RECEIPT_CAMERA_SCAN_WIDGET_V1.json",
+  "base_tree_sha": "fea7105f8f18da6eefac3b173bd783a9049566d3",
+  "target_repository": "Kuvexta/kuvexta-odoo-foundation",
+  "target_branch": "19.0",
+  "target_tree_sha": "1742a6877c04c0ea97bef1dbffab5114aabf49d0",
+  "effective_license": "LGPL-3",
+  "scope": "documentation_governance",
+  "behavior_change": false,
+  "license_change": false,
+  "vendor_source_change": false,
+  "relicensing": false,
+  "changed_files": [
+    "MANUAL_ES.md",
+    "README.rst",
+    "__manifest__.py"
+  ]
+}
