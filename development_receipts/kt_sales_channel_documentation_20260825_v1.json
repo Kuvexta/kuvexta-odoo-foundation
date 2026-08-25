@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "receipt_type": "post_migration_change",
+  "module": "kt_sales_channel",
+  "base_migration_receipt": "MIGRATION_RECEIPT_SALES_CHANNEL_V1.json",
+  "base_tree_sha": "106756392e1893fe8d2616b6558bf2509e617228",
+  "target_repository": "Kuvexta/kuvexta-odoo-foundation",
+  "target_branch": "19.0",
+  "target_tree_sha": "7af1d58349689a007191922c0fbfab1b4ea59cc2",
+  "effective_license": "LGPL-3",
+  "scope": "documentation_governance",
+  "behavior_change": false,
+  "license_change": false,
+  "vendor_source_change": false,
+  "relicensing": false,
+  "changed_files": [
+    "MANUAL_ES.md",
+    "README.rst",
+    "__manifest__.py"
+  ]
+}

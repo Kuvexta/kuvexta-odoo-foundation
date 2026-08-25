@@ -44,8 +44,15 @@ def git_tree(module: str) -> str | None:
     if not (ROOT / ".git").exists():
         return None
     try:
+        index_tree = subprocess.run(
+            ["git", "write-tree"],
+            cwd=ROOT,
+            check=True,
+            capture_output=True,
+            text=True,
+        ).stdout.strip()
         result = subprocess.run(
-            ["git", "rev-parse", f"HEAD:{module}"],
+            ["git", "rev-parse", f"{index_tree}:{module}"],
             cwd=ROOT,
             check=True,
             capture_output=True,
@@ -62,7 +69,7 @@ def validate_receipt(
     receipt_path: Path,
     expected_source: str,
     errors: list[str],
-) -> None:
+) -> dict:
     receipt = load_json(receipt_path)
     if receipt.get("module") != module:
         errors.append(f"{module}: receipt module mismatch")
@@ -75,12 +82,6 @@ def validate_receipt(
     target_tree = receipt.get("target_tree_sha")
     if not source_tree or source_tree != target_tree:
         errors.append(f"{module}: receipt source_tree_sha and target_tree_sha must match")
-    actual_tree = git_tree(module)
-    if actual_tree is not None and target_tree != actual_tree:
-        errors.append(
-            f"{module}: receipt target_tree_sha {target_tree!r} != checked-out tree {actual_tree!r}"
-        )
-
     manifest_license = manifest.get("license")
     receipt_license = receipt.get("effective_license") or receipt.get("license_preserved")
     if receipt_license != manifest_license:
@@ -93,6 +94,38 @@ def validate_receipt(
         errors.append(f"{module}: physical migration receipt cannot assert relicensing=true")
     if receipt.get("schema_version", 1) >= 2 and receipt.get("relicensing") is not False:
         errors.append(f"{module}: receipt schema >=2 must explicitly set relicensing=false")
+    return receipt
+
+
+def validate_current_receipt(
+    module: str,
+    manifest: dict,
+    receipt_path: Path,
+    initial_receipt_ref: str,
+    initial_receipt: dict,
+    errors: list[str],
+) -> None:
+    receipt = load_json(receipt_path)
+    if receipt.get("schema_version") != 1 or receipt.get("receipt_type") != "post_migration_change":
+        errors.append(f"{module}: current receipt must be schema 1 post_migration_change")
+    if receipt.get("module") != module:
+        errors.append(f"{module}: current receipt module mismatch")
+    if receipt.get("base_migration_receipt") != initial_receipt_ref:
+        errors.append(f"{module}: current receipt must link initial receipt")
+    if receipt.get("base_tree_sha") != initial_receipt.get("target_tree_sha"):
+        errors.append(f"{module}: current receipt base tree must equal initial tree")
+    if receipt.get("target_repository") != "Kuvexta/kuvexta-odoo-foundation" or receipt.get("target_branch") != "19.0":
+        errors.append(f"{module}: current receipt target repository/branch mismatch")
+    actual_tree = git_tree(module)
+    if actual_tree is not None and receipt.get("target_tree_sha") != actual_tree:
+        errors.append(f"{module}: current receipt tree does not match checked-out addon")
+    if receipt.get("effective_license") != manifest.get("license"):
+        errors.append(f"{module}: current receipt license mismatch")
+    for key in ("behavior_change", "license_change", "vendor_source_change", "relicensing"):
+        if receipt.get(key) is not False:
+            errors.append(f"{module}: documentation receipt requires {key}=false")
+    if not isinstance(receipt.get("changed_files"), list) or not receipt.get("changed_files"):
+        errors.append(f"{module}: current receipt requires changed_files")
 
 
 def main() -> int:
@@ -102,6 +135,7 @@ def main() -> int:
     planned = set(planned_states)
     declared_physical = set(policy.get("physical_modules", []))
     receipts = policy.get("migration_receipts", {})
+    current_receipts = policy.get("current_tree_receipts", {})
     addons = discover_addons()
     actual_physical = set(addons)
     errors: list[str] = []
@@ -135,6 +169,8 @@ def main() -> int:
             errors.append("physical_modules declares absent addons: " + ", ".join(stale))
     if set(receipts) != declared_physical:
         errors.append("migration_receipts keys must exactly match physical_modules")
+    if not set(current_receipts).issubset(declared_physical):
+        errors.append("current_tree_receipts may reference only physical_modules")
 
     for module, manifest in sorted(addons.items()):
         if planned_states.get(module) != PHYSICAL_STATE:
@@ -153,13 +189,24 @@ def main() -> int:
             if not receipt_path.is_file():
                 errors.append(f"{module}: migration receipt does not exist: {receipt_rel}")
             else:
-                validate_receipt(
+                initial_receipt = validate_receipt(
                     module,
                     manifest,
                     receipt_path,
                     policy.get("source_repository"),
                     errors,
                 )
+                actual_tree = git_tree(module)
+                initial_tree = initial_receipt.get("target_tree_sha")
+                current_rel = current_receipts.get(module)
+                if actual_tree is not None and actual_tree != initial_tree and not current_rel:
+                    errors.append(f"{module}: changed tree requires current_tree_receipt")
+                elif current_rel:
+                    current_path = ROOT / current_rel
+                    if not current_path.is_file():
+                        errors.append(f"{module}: current receipt does not exist: {current_rel}")
+                    else:
+                        validate_current_receipt(module, manifest, current_path, receipt_rel, initial_receipt, errors)
         for dependency in manifest.get("depends", []):
             if dependency.startswith("kt_") and dependency not in actual_physical:
                 errors.append(

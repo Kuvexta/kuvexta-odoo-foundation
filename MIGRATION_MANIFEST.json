@@ -41,16 +41,34 @@
     "kt_sales_channel": "MIGRATION_RECEIPT_SALES_CHANNEL_V1.json",
     "kt_toggle_override": "MIGRATION_RECEIPT_TOGGLE_V1.json"
   },
+  "current_tree_receipts": {
+    "kt_camera_scan_website_base": "development_receipts/kt_camera_scan_website_base_documentation_20260825_v1.json",
+    "kt_camera_scan_widget": "development_receipts/kt_camera_scan_widget_documentation_20260825_v1.json",
+    "kt_label_printing": "development_receipts/kt_label_printing_documentation_20260825_v1.json",
+    "kt_marketplace_core_utils": "development_receipts/kt_marketplace_core_utils_documentation_20260825_v1.json",
+    "kt_payment_gateway_core": "development_receipts/kt_payment_gateway_core_documentation_20260825_v1.json",
+    "kt_product_public_qr": "development_receipts/kt_product_public_qr_documentation_20260825_v1.json",
+    "kt_sales_channel": "development_receipts/kt_sales_channel_documentation_20260825_v1.json",
+    "kt_toggle_override": "development_receipts/kt_toggle_override_documentation_20260825_v1.json"
+  },
   "wave_1": [
     "kt_label_printing",
     "kt_marketplace_core_utils",
     "kt_sales_channel",
     "kt_toggle_override"
   ],
-  "wave_2": ["kt_camera_scan_widget"],
-  "wave_3": ["kt_payment_gateway_core"],
-  "wave_4": ["kt_camera_scan_website_base"],
-  "wave_5": ["kt_product_public_qr"],
+  "wave_2": [
+    "kt_camera_scan_widget"
+  ],
+  "wave_3": [
+    "kt_payment_gateway_core"
+  ],
+  "wave_4": [
+    "kt_camera_scan_website_base"
+  ],
+  "wave_5": [
+    "kt_product_public_qr"
+  ],
   "deferred": {},
   "rules": {
     "may_depend_on_professional": false,
@@ -71,7 +89,9 @@
     "source_deleted_must_be_false_for_initial_migration": true,
     "relicensing_true_forbidden": true,
     "schema_1_receipts_may_omit_relicensing_field": true,
-    "new_receipts_must_explicitly_set_relicensing_false": true
+    "new_receipts_must_explicitly_set_relicensing_false": true,
+    "post_migration_changes_require_current_tree_receipt": true,
+    "current_tree_receipt_must_match_checked_out_addon": true
   },
   "notes": [
     "physical_modules is the machine-readable inventory of addons already copied into Foundation.",

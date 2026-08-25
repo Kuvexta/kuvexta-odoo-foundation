@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "receipt_type": "post_migration_change",
+  "module": "kt_marketplace_core_utils",
+  "base_migration_receipt": "MIGRATION_RECEIPT_CORE_UTILS_V1.json",
+  "base_tree_sha": "d79ac3023f6d94ae9f583a2320a0b3acbf230e96",
+  "target_repository": "Kuvexta/kuvexta-odoo-foundation",
+  "target_branch": "19.0",
+  "target_tree_sha": "ec0d9e708b90bd333b5bb21d9a2a97e60b016d3d",
+  "effective_license": "LGPL-3",
+  "scope": "documentation_governance",
+  "behavior_change": false,
+  "license_change": false,
+  "vendor_source_change": false,
+  "relicensing": false,
+  "changed_files": [
+    "MANUAL_ES.md",
+    "README.rst",
+    "__manifest__.py"
+  ]
+}

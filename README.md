@@ -21,3 +21,11 @@ Licensing is declared per Odoo module. A repository-level assumption must never 
 present here passed dependency/provenance gates and has an exact-tree receipt.
 The camera Website base is intentionally limited to official product barcodes;
 its multi-barcode integration lives as an explicit bridge in Professional.
+
+## Ruta documental unificada
+
+Consulte [DOCUMENTATION_MAP.md](DOCUMENTATION_MAP.md). Las políticas,
+investigaciones, diseños de módulos/ecosistemas, FAQ/PQR, incidentes y lecciones
+transversales se mantienen en el repositorio privado
+Kuvexta/kuvexta-odoo-knowledge, empezando por INDEX.yaml. Este repositorio
+conserva la documentación operativa y evidencia que corresponden a su propio rol.

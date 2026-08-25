@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "receipt_type": "post_migration_change",
+  "module": "kt_product_public_qr",
+  "base_migration_receipt": "MIGRATION_RECEIPT_PRODUCT_PUBLIC_QR_V1.json",
+  "base_tree_sha": "f2d96b54089b4d27f3dd7ad65ec63d50306bf570",
+  "target_repository": "Kuvexta/kuvexta-odoo-foundation",
+  "target_branch": "19.0",
+  "target_tree_sha": "3490fc160dc35e2f10f597fecf4076e0224d80ab",
+  "effective_license": "LGPL-3",
+  "scope": "documentation_governance",
+  "behavior_change": false,
+  "license_change": false,
+  "vendor_source_change": false,
+  "relicensing": false,
+  "changed_files": [
+    "MANUAL_ES.md",
+    "README.rst",
+    "__manifest__.py",
+    "docs/DISENO_ZPL_MULTIPROTOCOLO.md"
+  ]
+}
