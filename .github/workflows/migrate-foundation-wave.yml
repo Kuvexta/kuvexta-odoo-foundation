@@ -5,12 +5,17 @@ on:
     branches: ["migration/foundation-wave-1"]
     paths: ["MIGRATION_REQUEST.json"]
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' || github.event_name == 'pull_request_target' }}
+
 permissions:
   contents: write
 
 jobs:
   migrate:
     runs-on: ubuntu-24.04
+    timeout-minutes: 60
     steps:
       - name: Checkout target repository
         uses: actions/checkout@v4
