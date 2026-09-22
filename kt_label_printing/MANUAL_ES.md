@@ -1,10 +1,10 @@
 # kt_label_printing — Manual de uso
 
-Este es un módulo de **infraestructura compartida** — no imprime
-nada por sí solo, no tiene sentido instalarlo aparte de otro módulo
-que lo use (hoy: `kt_product_public_qr`). Este manual explica lo
-único que sí configuras directamente aquí: los **tamaños de
-etiqueta**.
+Este módulo administra los **tamaños de etiqueta** que comparten los
+módulos que imprimen etiquetas (hoy: `kt_product_public_qr`), y trae
+además su propia salida: la **rejilla PDF de etiquetas de producto**,
+que se imprime desde el asistente de etiquetas de Odoo con la opción
+**«Rejilla PDF Kuvexta»**.
 
 ## Índice
 
@@ -57,8 +57,9 @@ papel).
 7. Guarda — los campos **Columnas** y **Filas** se calculan solos
    (en este ejemplo, probablemente 1 columna, ya que 50mm caben una
    sola vez en 58mm de ancho útil).
-8. Al imprimir etiquetas desde el módulo que las usa (ej.
-   `kt_product_public_qr`), este nuevo tamaño aparece disponible
+8. Al imprimir etiquetas —con la opción «Rejilla PDF Kuvexta» o
+   desde otro módulo que use estos tamaños, como
+   `kt_product_public_qr`—, este nuevo tamaño aparece disponible
    para elegir, junto con los 3 de ejemplo.
 
 ## 3. Preguntas frecuentes
@@ -70,9 +71,98 @@ impresa (los PDF generados no dependen del registro después de
 creados).
 
 **¿Este módulo imprime algo si lo instalo solo?**
-No — no tiene ningún menú de "imprimir", ninguna acción de reporte
-propia. Solo trae la administración de tamaños; el contenido real de
-la etiqueta (qué código, qué texto) lo define el módulo que lo usa.
+Sí — trae **«Etiquetas de producto (cuadrícula PDF)»**, que genera una
+hoja con una cuadrícula de etiquetas: en recepción de mercancía se
+recibe un lote, y así la hoja se imprime de una vez en lugar de abrir
+una imagen por artículo.
+
+Para usarla:
+
+1. Selecciona los productos y pulsa **Imprimir etiquetas**.
+2. En **Formato**, elige **«Rejilla PDF Kuvexta»**.
+3. En **Tamaño de etiqueta**, elige el tamaño de tu papel. Solo aparece
+   con esta opción, y es obligatorio.
+4. Pon las copias y pulsa **Imprimir**.
+
+**Desde una recepción**, el botón **Imprimir etiquetas** de la operación
+pregunta qué etiquetas quieres: elige **Etiquetas de producto** —la opción
+por defecto— y se abre el mismo asistente. Con **«Cantidades de la
+operación»** sale **una etiqueta por unidad recibida** de cada producto, las
+mismas cantidades que usa Odoo para sus etiquetas estándar.
+
+**Productos con lote o número de serie.** Su etiqueta lleva **los dos**: el
+código de barras **del producto** —el mismo que tendría sin lote— y, debajo,
+en texto, el lote o el serial:
+
+- **«Lote: L-2026-0917»** si el producto se controla por lotes;
+- **«S/N: SN-0001»** si se controla por número de serie, una etiqueta por
+  serial;
+- **«Lote/S/N: X»** si el producto ya no tiene seguimiento pero llegó con
+  lote (pasa si se cambió su configuración después de recibir).
+
+Así la caja se escanea como cualquier otra del mismo producto, y el lote se
+lee a la vista. **Es distinto de las etiquetas estándar de Odoo**, que
+imprimen solo el código del lote.
+
+> **Límite de esta versión:** el lote o serial va **solo en texto**, sin su
+> propio código de barras. Si necesitas escanearlo, tecléalo. Si un lote es
+> tan largo que no cabe, se corta con puntos suspensivos («…») sin mover el
+> resto de la hoja.
+
+Para que salgan los lotes, la recepción tiene que tener **asignados los lotes
+o seriales, con su cantidad**, antes de imprimir; y el producto, la unidad de
+medida **Unidades**. Con otra unidad Odoo imprime una sola etiqueta y sin
+lote. Los lotes y números de serie se activan en *Inventario → Ajustes →
+Lotes y números de serie*.
+
+Si en vez de **Etiquetas de producto** eliges **Etiquetas de lote/SN**, se
+abre el asistente estándar de Odoo para etiquetas de lote, que este módulo no
+modifica.
+
+**Cada etiqueta es de la variante**: una camisa talla M y la misma en talla L
+salen cada una con **su** código de barras. Si imprimes desde la ficha de un
+producto con variantes, salen todas sus variantes, cada una con las copias
+indicadas.
+
+**Todo sale del tamaño elegido**: cuántas columnas y filas hay por
+hoja, cuánto mide cada etiqueta, cuánto mide el código de barras —de
+ancho, el «tamaño del contenido principal»; de alto, lo que deja libre
+el texto— y el tamaño de la propia hoja del PDF, con su margen. Dos
+tamaños distintos dan hojas distintas. Los demás formatos del asistente
+siguen imprimiendo las etiquetas estándar de Odoo, sin cambios.
+
+Cada etiqueta lleva **el código de barras, el nombre y la referencia
+interna**. No lleva precio a propósito: un precio impreso caduca, y
+una etiqueta con precio viejo es peor que una sin él.
+
+Otros módulos pueden seguir definiendo su propio contenido —qué
+código, qué texto— y reutilizar de aquí los tamaños y el cálculo de la
+cuadrícula.
+
+**¿Y si un producto no tiene código de barras?**
+Es frecuente en ferretería —tornillería suelta, cortes a medida—, y
+**ningún producto se queda sin etiqueta**. El sistema va probando en
+este orden:
+
+1. **Si tiene código de barras**, se imprime ese.
+2. **Si no, pero tiene referencia interna**, se imprime la referencia
+   como código de barras, y la etiqueta lleva la marca **SKU** al lado
+   para que nadie la confunda con el código del fabricante.
+3. **Si no tiene ninguno de los dos**, la etiqueta sale igual con su
+   nombre y su referencia, sin gráfico: legible y cotejable a mano,
+   aunque no se pueda escanear.
+
+Cuántos saldrán por el caso 2 y por el caso 3, y cuáles, lo **avisa
+el asistente antes de imprimir**, con la opción «Rejilla PDF Kuvexta»
+elegida —con los formatos estándar no aparece, porque esos no aplican
+este orden—. No va en la hoja: **la hoja lleva solo etiquetas**,
+porque en papel adhesivo cualquier aviso impreso ocuparía celdas y
+desplazaría la cuadrícula.
+
+**¿Necesito algo instalado en el servidor para el PDF?**
+Sí: **`wkhtmltopdf`**, el programa que Odoo usa para convertir a PDF.
+El módulo lo declara, así que Odoo **no deja instalarlo** si falta, en
+vez de instalarse y fallar al imprimir.
 
 **¿Cómo sé qué tamaño de hoja poner para un rollo continuo (sin
 hojas fijas como A4)?**
@@ -80,14 +170,7 @@ Pon el ancho real del rollo en "Ancho de la hoja", y un número
 grande (ej. 2000mm) en "Alto de la hoja" — el sistema no necesita
 saber el largo real del rollo, solo genera tantas etiquetas seguidas
 como necesites, una tras otra en esa "hoja" larga y angosta.
-## Autoridad documental y mejora continua
 
-- Código y operación de este addon: `Kuvexta/kuvexta-odoo-foundation@19.0`.
-- Investigación, diseños, FAQ/PQR, incidentes y lecciones transversales:
-  `Kuvexta/kuvexta-odoo-knowledge` mediante `INDEX.yaml` y `CATALOG.yaml`.
-- Composición instalable y rollback: bundle exacto de
-  `Kuvexta/kuvexta-odoo-integration`.
+---
 
-La copia retenida en Source es evidencia congelada. Toda mejora se propone aquí
-y debe actualizar manual, pruebas y comprobante del árbol cuando corresponda.
-Los ensayos externos aplicables no se consideran cerrados por una prueba local.
+<sub>Nombre canónico de este archivo: `kt_label_printing/MANUAL_ES.md`. Alias de coordinación, en minúsculas porque el patrón de scopes no admite mayúsculas: `repo/source/file/kt_label_printing/manual_es.md`.</sub>
