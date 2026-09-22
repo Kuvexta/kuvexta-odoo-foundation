@@ -1,5 +1,10 @@
 # Diseño — Impresión térmica directa: ZPL / EPL / TSPL / DPL
 
+> Nota de gobierno 2026-08-25: este diseño conserva el antecedente histórico.
+> `kt_qr_webkul_print` no se migró; el adapter limpio y autoritativo es
+> `Kuvexta/kuvexta-odoo-vendor-adapters/kt_webkul_public_qr_print`. El producto
+> Webkul sigue externo, licenciado por el cliente y sujeto a smoke autorizado.
+
 **Estado (04/08/2026): el módulo puente `kt_qr_webkul_print` está
 CONSTRUIDO, y la generación de ZPL en sí YA SE CONFIRMÓ CORRECTA con
 una prueba real** — se generó el texto ZPL de 3 productos reales
