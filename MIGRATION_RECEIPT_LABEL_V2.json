@@ -1,0 +1,63 @@
+{
+  "schema_version": 2,
+  "module": "kt_label_printing",
+  "source_repository": "Kuvexta/odoo-community-tools",
+  "source_branch": "19.0",
+  "source_commit": "17b7334170bce9300bb6fab479921443072c2a4e",
+  "source_pull_requests": [
+    244,
+    245
+  ],
+  "source_tree_sha": "79e4742aad02878affe3c6e43d18cf148e41a13e",
+  "target_repository": "Kuvexta/kuvexta-odoo-foundation",
+  "target_branch": "19.0",
+  "target_tree_sha": "79e4742aad02878affe3c6e43d18cf148e41a13e",
+  "copy_mode": "exact_tree",
+  "verified_files": 24,
+  "exact_tree_match": true,
+  "effective_license": "LGPL-3",
+  "license_preserved": "LGPL-3",
+  "relicensing": false,
+  "source_deleted": false,
+  "dependency_closure": {
+    "foundation": [],
+    "official_odoo": [
+      "product",
+      "stock"
+    ],
+    "professional": [],
+    "community_agpl": [],
+    "vendor": [],
+    "internal": [],
+    "review": []
+  },
+  "provenance": {
+    "ownership": "kuvexta",
+    "evidence": "strong",
+    "clearance": "foundation_only",
+    "decision": "ADR-4.5"
+  },
+  "adr4_exceptional_sync": {
+    "adr": "ADR-4, punto 5",
+    "origin_repository": "Kuvexta/odoo-community-tools",
+    "origin_branch": "19.0",
+    "origin_commit": "17b7334170bce9300bb6fab479921443072c2a4e",
+    "origin_tree": "79e4742aad02878affe3c6e43d18cf148e41a13e",
+    "origin_pull_requests": [
+      244,
+      245
+    ],
+    "reason": "El piloto KM-003.1 (Nexo Ferretero) necesita imprimir en recepcion una rejilla PDF de etiquetas con el tamano real del papel, las cantidades de la operacion, una etiqueta por variante y, para productos con lote o numero de serie, el codigo del producto con Lote o S/N debajo. Por ADR-4 la autoridad es foundation, pero foundation no ejecuta pruebas Odoo, asi que el cambio se desarrollo y probo en la copia congelada de odoo-community-tools (PR 243, 244 y 245, las tres con validate-merge valid y CI verde con --without-demo=all --no-http --test-enable) y se trae aqui en UNA SOLA sincronizacion. La gobernanza que permitira desarrollar funcionalmente en foundation es la decision D2 y va despues del piloto.",
+    "authorized_by": "Andres Suarez, decisiones D1, D3 y D5 del 2026-09-21 y S1-S3 del 2026-09-22",
+    "replaces_initial_receipt": "MIGRATION_RECEIPT_LABEL_V1.json",
+    "previous_foundation_tree": "8a218e34221137c709893693460e3fa8a48d1b0b",
+    "previous_current_tree_receipt": "development_receipts/kt_label_printing_documentation_20260825_v1.json",
+    "previous_receipts_rewritten": false
+  },
+  "optional_integrations": [],
+  "notes": [
+    "Sincronizacion excepcional ADR-4.5, no una migracion inicial: el modulo ya estaba en Foundation desde la PR 5 (d24780f). Trae la Rejilla PDF (Source PR 244) y las etiquetas de lote y numero de serie (Source PR 245), version 19.0.1.1.0.",
+    "El arbol es identico al de Source en 17b7334; la capa documental propia de Foundation -seccion de autoridad, website del manifiesto- se reaplica en el commit siguiente, con su recibo post_migration_change de 20260922.",
+    "El recibo V1 y el recibo de arbol actual de 20260825 se conservan intactos y sin referenciar, como historia."
+  ]
+}

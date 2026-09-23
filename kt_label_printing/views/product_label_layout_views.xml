@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- El aviso va en el asistente y no en la hoja: la hoja lleva solo
+         etiquetas, porque en papel adhesivo un aviso impreso ocuparía
+         celdas y desplazaría la cuadrícula. Aquí se ve antes de imprimir,
+         que es cuando todavía se puede hacer algo.
+
+         Solo aparece con la opción «Rejilla PDF Kuvexta», que es la única
+         que aplica este respaldo, y solo cuando hay algo que decir: si
+         todos los productos de la tanda llevan su código de barras, el
+         campo queda vacío y el asistente no cambia de aspecto.
+
+         El tamaño de etiqueta es obligatorio con esa opción, porque de él
+         salen columnas, filas y medidas de la rejilla. -->
+    <record id="product_label_layout_form_kt_label_printing" model="ir.ui.view">
+        <field name="name">product.label.layout.form.kt.label.printing</field>
+        <field name="model">product.label.layout</field>
+        <field name="inherit_id" ref="product.product_label_layout_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='print_format']" position="after">
+                <field name="kt_label_size_id"
+                       invisible="print_format != 'kt_label_grid_pdf'"
+                       required="print_format == 'kt_label_grid_pdf'"/>
+                <field name="kt_label_code_warning"
+                       widget="html"
+                       readonly="1"
+                       nolabel="1"
+                       invisible="print_format != 'kt_label_grid_pdf' or not kt_label_code_warning"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

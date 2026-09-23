@@ -20,6 +20,11 @@
         "website",
         "product",
     ],
+    # report/ declara seis `ir.actions.report` con `report_type` qweb-pdf, y sus
+    # dos XML están en `data`, así que los registros existen de verdad: sin el
+    # renderizador no hay etiqueta ni cuadrícula que imprimir. Es la misma razón
+    # por la que la topología de Integration atribuye wkhtmltopdf a foundation.
+    "external_dependencies": {"bin": ["wkhtmltopdf"]},
     "data": [
         "security/ir.model.access.csv",
         "report/product_public_qr_label_report.xml",

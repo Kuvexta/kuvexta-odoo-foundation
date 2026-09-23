@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Celda individual. Contenido deliberadamente mínimo — código,
+         nombre y referencia interna — porque una celda de cuadrícula es
+         del tamaño de una etiqueta y no cabe más.
+
+         SIN PRECIO a propósito: un precio impreso caduca, y una etiqueta
+         con precio viejo es peor que una sin él.
+
+         Cada etiqueta es `(variante, (code, kind, reason), lote)`: la
+         etiqueta es de la variante, con SU código de barras. La celda NO
+         decide nada: lee la clasificación ya hecha y la imagen ya generada
+         en `kt_barcode_images[code]`. Así cada variante se clasifica una vez
+         y su código se dibuja una vez, por muchas unidades o lotes que se
+         reciban.
+
+         `lote` es `(prefijo, valor)` o False. Si lo hay, el gráfico sigue
+         siendo el del PRODUCTO y debajo va una línea de texto «Lote: X» o
+         «S/N: X» (DECISIONES, «Respuesta 4 de Jonaily»). Solo texto, sin
+         segundo código de barras. Esa línea resta su alto solo al código de
+         su propia etiqueta (`barcode_height_tracked_mm`); las demás no
+         cambian. Si no cabe se recorta con puntos suspensivos, y la celda,
+         de tamaño fijo y con `overflow:hidden`, no deja que empuje a nada.
+
+         Medidas en mm, todas de `kt_geometry`, que sale de `kt.label.size`.
+         El marco usa `box-sizing: border-box` para que el borde quede
+         DENTRO de la etiqueta: una rejilla que ocupa justo el alto útil
+         desbordaría a otra hoja por el grosor de las líneas. Cuando el
+         código es el SKU se marca como tal, para que quien lo lea no lo
+         confunda con un EAN del fabricante. Ningún producto se omite: sin
+         código, la celda sale igual con nombre y referencia. -->
+    <template id="report_kt_label_grid_cell">
+        <t t-set="g" t-value="kt_geometry"/>
+        <td style="padding:0; vertical-align:top;">
+            <div class="text-center"
+                 t-attf-style="box-sizing:border-box; overflow:hidden; width:{{ g['cell_width_mm'] }}mm; height:{{ g['cell_height_mm'] }}mm; padding:{{ g['cell_padding_mm'] }}mm; border:0.1mm solid #bbb; font-family:sans-serif; text-align:center;">
+                <t t-if="entry">
+                    <t t-set="product" t-value="entry[0]"/>
+                    <t t-set="resolved" t-value="entry[1]"/>
+                    <t t-set="code" t-value="resolved[0]"/>
+                    <t t-set="kind" t-value="resolved[1]"/>
+                    <t t-set="lot" t-value="entry[2]"/>
+                    <div style="font-size:8px; font-weight:bold; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;"
+                         t-esc="product.display_name"/>
+                    <img t-if="code"
+                         t-att-src="kt_barcode_images[code]"
+                         t-attf-style="display:block; margin:0.5mm auto 0 auto; width:{{ g['barcode_width_mm'] }}mm; height:{{ g['barcode_height_tracked_mm'] if lot else g['barcode_height_mm'] }}mm;"/>
+                    <div t-if="code" style="font-size:7px; letter-spacing:1px; white-space:nowrap; overflow:hidden;">
+                        <span t-if="kind == kt_code_sku"
+                              style="font-weight:bold; border:1px solid #333; padding:0 1mm; margin-right:1mm;">SKU</span>
+                        <span t-esc="code"/>
+                    </div>
+                    <div t-if="product.default_code and kind != kt_code_sku"
+                         style="font-size:7px; color:#666; white-space:nowrap; overflow:hidden;"
+                         t-esc="product.default_code"/>
+                    <div t-if="lot" class="kt-label-lot"
+                         style="font-size:7px; font-weight:bold; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;"
+                         t-esc="lot[0] + ' ' + lot[1]"/>
+                </t>
+            </div>
+        </td>
+    </template>
+
+    <!-- Cuadrícula de `kt.label.size`: columnas, filas, margen y celda
+         salen del tamaño elegido en el asistente, y la hoja del PDF se
+         ajusta a ese mismo tamaño (ver `IrActionsReport` en el .py). La
+         hoja lleva SOLO etiquetas: en papel adhesivo cualquier aviso
+         impreso ocuparía celdas y desplazaría la cuadrícula.
+
+         Llama solo a `web.html_container` y NO a `web.external_layout`:
+         una hoja de etiquetas no lleva membrete, y además el paquete
+         `wkhtmltopdf` de Ubuntu se compila contra un Qt reducido que no
+         admite las opciones de cabecera ni de pie de página. Sin
+         `div.article`, Odoo pasa el contenido de `main` tal cual, sin el
+         CSS del layout; por eso el margen del navegador se anula aquí. -->
+    <template id="report_kt_label_grid">
+        <t t-call="web.html_container">
+            <style>html, body { margin: 0; padding: 0; }</style>
+            <t t-foreach="range(page_numbers)" t-as="page">
+                <div t-attf-style="padding:{{ kt_geometry['margin_mm'] }}mm; {{ 'page-break-before:always;' if page else '' }}">
+                    <table style="border-collapse:collapse; border-spacing:0; table-layout:fixed;">
+                        <t t-foreach="range(rows)" t-as="row">
+                            <tr>
+                                <t t-foreach="range(columns)" t-as="column">
+                                    <t t-set="label_index" t-value="page * rows * columns + row * columns + column"/>
+                                    <t t-set="entry" t-value="labels[label_index] if label_index &lt; len(labels) else None"/>
+                                    <t t-call="kt_label_printing.report_kt_label_grid_cell"/>
+                                </t>
+                            </tr>
+                        </t>
+                    </table>
+                </div>
+            </t>
+        </t>
+    </template>
+
+    <!-- El documento que `_get_report_values` alimenta. -->
+    <template id="report_kt_label_grid_document">
+        <t t-call="kt_label_printing.report_kt_label_grid"/>
+    </template>
+
+    <!-- Base de la hoja: sin márgenes ni cabecera, porque el margen es el
+         de `kt.label.size` y lo pone la plantilla. El ancho y el alto
+         reales se sustituyen en cada impresión por los del tamaño elegido;
+         A4 solo rige si alguien renderiza sin tamaño, y eso el informe lo
+         rechaza. -->
+    <record id="paperformat_kt_label_grid" model="report.paperformat">
+        <field name="name">Etiquetas Kuvexta (rejilla PDF)</field>
+        <field name="format">A4</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">0</field>
+        <field name="margin_bottom">0</field>
+        <field name="margin_left">0</field>
+        <field name="margin_right">0</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">0</field>
+        <field name="disable_shrinking" eval="True"/>
+        <field name="dpi">96</field>
+    </record>
+
+    <!-- Sin `binding_model_id` a propósito: se llega por el asistente
+         nativo, opción «Rejilla PDF Kuvexta», que es donde se elige el
+         tamaño y donde se ve el aviso antes de imprimir. -->
+    <record id="action_report_kt_label_grid" model="ir.actions.report">
+        <field name="name">Etiquetas de producto (cuadrícula PDF)</field>
+        <field name="model">product.template</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">kt_label_printing.report_kt_label_grid_document</field>
+        <field name="report_file">kt_label_printing.report_kt_label_grid_document</field>
+        <field name="print_report_name">'Etiquetas'</field>
+        <field name="paperformat_id" ref="paperformat_kt_label_grid"/>
+    </record>
+
+</odoo>

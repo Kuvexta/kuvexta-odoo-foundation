@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "receipt_type": "post_migration_change",
+  "module": "kt_product_public_qr",
+  "base_migration_receipt": "MIGRATION_RECEIPT_PRODUCT_PUBLIC_QR_V2.json",
+  "base_tree_sha": "e316c9d1c6137f8701cd811592020b925234c11f",
+  "target_repository": "Kuvexta/kuvexta-odoo-foundation",
+  "target_branch": "19.0",
+  "target_tree_sha": "b306949fe6570816ac7d2b97522159f8f72c31c5",
+  "effective_license": "LGPL-3",
+  "scope": "documentation_governance",
+  "behavior_change": false,
+  "license_change": false,
+  "vendor_source_change": false,
+  "relicensing": false,
+  "changed_files": [
+    "MANUAL_ES.md",
+    "README.rst",
+    "__manifest__.py",
+    "docs/DISENO_ZPL_MULTIPROTOCOLO.md"
+  ],
+  "notes": [
+    "Reaplica la capa documental propia de Foundation sobre el arbol sincronizado en el commit anterior: seccion de autoridad documental, website del manifiesto y, en kt_product_public_qr, el manual en espanol y la nota de gobierno del diseno ZPL. Ningun cambio de comportamiento, licencia ni origen vendor.",
+    "Los ficheros que Source no toco desde la migracion se toman literalmente del arbol de Foundation 0b7525c; los que cambiaron en ambos lados se fusionan a tres vias con git merge-file, base el arbol del recibo inicial, y solo se aceptan sin conflictos.",
+    "Sustituye en el manifiesto al recibo de arbol actual de 20260825, que se conserva intacto y sin referenciar."
+  ]
+}
