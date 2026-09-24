@@ -34,7 +34,7 @@
   "migration_receipts": {
     "kt_camera_scan_website_base": "MIGRATION_RECEIPT_CAMERA_SCAN_WEBSITE_BASE_V1.json",
     "kt_camera_scan_widget": "MIGRATION_RECEIPT_CAMERA_SCAN_WIDGET_V1.json",
-    "kt_label_printing": "MIGRATION_RECEIPT_LABEL_V2.json",
+    "kt_label_printing": "MIGRATION_RECEIPT_LABEL_V3.json",
     "kt_marketplace_core_utils": "MIGRATION_RECEIPT_CORE_UTILS_V1.json",
     "kt_payment_gateway_core": "MIGRATION_RECEIPT_PAYMENT_GATEWAY_CORE_V1.json",
     "kt_product_public_qr": "MIGRATION_RECEIPT_PRODUCT_PUBLIC_QR_V2.json",
@@ -48,7 +48,7 @@
     "kt_payment_gateway_core": "development_receipts/kt_payment_gateway_core_documentation_20260825_v1.json",
     "kt_sales_channel": "development_receipts/kt_sales_channel_documentation_20260825_v1.json",
     "kt_toggle_override": "development_receipts/kt_toggle_override_documentation_20260825_v1.json",
-    "kt_label_printing": "development_receipts/kt_label_printing_documentation_20260922_v2.json",
+    "kt_label_printing": "development_receipts/kt_label_printing_documentation_20260924_v3.json",
     "kt_product_public_qr": "development_receipts/kt_product_public_qr_documentation_20260922_v2.json"
   },
   "wave_1": [
@@ -100,7 +100,8 @@
     "kt_camera_scan_widget was migrated with exact source tree equality; zbar.wasm and both vendored license files were verified by Git blob SHA before the final copy.",
     "kt_camera_scan_website_base was created after ADR-9 with a new public contract and migrated as an exact LGPL-3 tree; it depends only on official website_sale and the admitted Foundation camera widget.",
     "kt_product_public_qr 19.0.2.0.0 was admitted after ADR-10 as an exact LGPL-3 tree. It owns the neutral public token/page/report contract and depends only on official Odoo plus kt_label_printing; alternate barcodes remain in an explicit Professional bridge.",
-    "kt_label_printing y kt_product_public_qr se resincronizaron desde Source 17b7334 como sincronizacion excepcional ADR-4.5, con recibos exact-tree V2 que declaran origen, commit, arbol y motivo. Los recibos V1 y los de arbol actual de 20260825 se conservan intactos y sin referenciar, como historia."
+    "kt_label_printing y kt_product_public_qr se resincronizaron desde Source 17b7334 como sincronizacion excepcional ADR-4.5, con recibos exact-tree V2 que declaran origen, commit, arbol y motivo. Los recibos V1 y los de arbol actual de 20260825 se conservan intactos y sin referenciar, como historia.",
+    "kt_label_printing se resincronizo desde Source fc80a1f (PR 246, meta charset utf-8 de la Rejilla PDF, 19.0.1.1.1) como segunda sincronizacion excepcional ADR-4.5, con el recibo exact-tree V3. El recibo V2 y el de arbol actual de 20260922 se conservan intactos y sin referenciar; source_exceptional_sync_prs y source_exceptional_sync_merge siguen describiendo la sincronizacion de la PR 20."
   ],
   "source_exceptional_sync_prs": [
     243,

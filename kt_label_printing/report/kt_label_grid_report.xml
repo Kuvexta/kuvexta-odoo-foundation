@@ -68,14 +68,22 @@
          hoja lleva SOLO etiquetas: en papel adhesivo cualquier aviso
          impreso ocuparía celdas y desplazaría la cuadrícula.
 
-         Llama solo a `web.html_container` y NO a `web.external_layout`:
-         una hoja de etiquetas no lleva membrete, y además el paquete
-         `wkhtmltopdf` de Ubuntu se compila contra un Qt reducido que no
-         admite las opciones de cabecera ni de pie de página. Sin
-         `div.article`, Odoo pasa el contenido de `main` tal cual, sin el
-         CSS del layout; por eso el margen del navegador se anula aquí. -->
+         Llama solo a `web.html_container` y NO a `web.external_layout`,
+         por dos razones: una hoja de etiquetas no lleva membrete, y la hoja
+         tiene que salir igual con el paquete `wkhtmltopdf` de Ubuntu, que
+         se compila contra un Qt sin parchear y no admite las opciones de
+         cabecera ni de pie de página.
+
+         Consecuencia de no tener `div.article`: `_prepare_html` de Odoo pasa
+         los hijos de `main` tal cual, SIN `web.minimal_layout`. Se pierde
+         el CSS del layout —por eso el margen del navegador se anula aquí— y
+         también su `<meta charset="utf-8">`: sin él wkhtmltopdf lee el
+         UTF-8 del body como Latin-1 («epÃ³xico»). Por eso el primer
+         elemento es el `<meta charset>`, que no ocupa sitio ni mueve la
+         cuadrícula (prueba `test_the_pdf_text_keeps_accents_and_enye`). -->
     <template id="report_kt_label_grid">
         <t t-call="web.html_container">
+            <meta charset="utf-8"/>
             <style>html, body { margin: 0; padding: 0; }</style>
             <t t-foreach="range(page_numbers)" t-as="page">
                 <div t-attf-style="padding:{{ kt_geometry['margin_mm'] }}mm; {{ 'page-break-before:always;' if page else '' }}">
