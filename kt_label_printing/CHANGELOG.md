@@ -1,5 +1,29 @@
 # Changelog — kt_label_printing
 
+## 19.0.1.1.1 (24/09/2026)
+
+> **Corrección bajo sincronización excepcional ADR-4.5** (TASK-000090),
+> igual que D1/D3. Se hace aquí porque foundation no corre pruebas Odoo (D2,
+> gobernanza de foundation para cambios funcionales, sigue pendiente para
+> después del piloto). T-fnd la llevará a foundation conservando sus 3 capas
+> propias (autoridad documental en `README.rst` y `MANUAL_ES.md`, `website`).
+
+### Tildes y Ñ en el texto de la Rejilla PDF (O-C5-2)
+
+**Corrige lo que se imprime.** El texto del PDF salía como Latin-1
+(«epÃ³xico», «CaÃ±o», «L-Ã‘AN-01»), también al imprimir desde la interfaz y
+con cualquier `wkhtmltopdf`, parcheado o no.
+
+* **Causa:** sin `div.article`, `_prepare_html` de Odoo 19 pasa los hijos de
+  `main` sin `web.minimal_layout`, es decir, sin `<meta charset>`, y
+  wkhtmltopdf leía el body UTF-8 como Latin-1.
+* **Arreglo:** `<meta charset="utf-8"/>` como primer elemento de
+  `report_kt_label_grid`. No ocupa sitio: la geometría no cambia.
+* **Prueba nueva:** `test_the_pdf_text_keeps_accents_and_enye` lee el **texto
+  del PDF real** (no el HTML) y exige tildes, «Caño» y «Lote: L-ÑAN-01».
+* El comentario de la plantilla explica ahora las dos consecuencias de no
+  tener `div.article`: sin CSS del layout y sin charset.
+
 ## 19.0.1.1.0 (22/09/2026)
 
 > **Cambio funcional sobre copia congelada por ADR-4, bajo sincronización

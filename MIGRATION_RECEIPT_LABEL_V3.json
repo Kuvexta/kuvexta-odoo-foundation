@@ -1,0 +1,61 @@
+{
+  "schema_version": 2,
+  "module": "kt_label_printing",
+  "source_repository": "Kuvexta/odoo-community-tools",
+  "source_branch": "19.0",
+  "source_commit": "fc80a1f9955278c782319a6cbf0eddb9b625520f",
+  "source_pull_requests": [
+    246
+  ],
+  "source_tree_sha": "a490508004a508899304e442319317c0345dc609",
+  "target_repository": "Kuvexta/kuvexta-odoo-foundation",
+  "target_branch": "19.0",
+  "target_tree_sha": "a490508004a508899304e442319317c0345dc609",
+  "copy_mode": "exact_tree",
+  "verified_files": 24,
+  "exact_tree_match": true,
+  "effective_license": "LGPL-3",
+  "license_preserved": "LGPL-3",
+  "relicensing": false,
+  "source_deleted": false,
+  "dependency_closure": {
+    "foundation": [],
+    "official_odoo": [
+      "product",
+      "stock"
+    ],
+    "professional": [],
+    "community_agpl": [],
+    "vendor": [],
+    "internal": [],
+    "review": []
+  },
+  "provenance": {
+    "ownership": "kuvexta",
+    "evidence": "strong",
+    "clearance": "foundation_only",
+    "decision": "ADR-4.5"
+  },
+  "adr4_exceptional_sync": {
+    "adr": "ADR-4, punto 5",
+    "origin_repository": "Kuvexta/odoo-community-tools",
+    "origin_branch": "19.0",
+    "origin_commit": "fc80a1f9955278c782319a6cbf0eddb9b625520f",
+    "origin_tree": "a490508004a508899304e442319317c0345dc609",
+    "origin_pull_requests": [
+      246
+    ],
+    "reason": "O-C5-2 del smoke del piloto KM-003.1 (Nexo Ferretero) en KUVEXTA-STAGING-02: la Rejilla PDF de etiquetas imprimia las tildes y la enie como mojibake (UTF-8 leido como Latin-1). Causa probada: la plantilla report_kt_label_grid no usa div.article, asi que _prepare_html de Odoo 19 (ir_actions_report.py, linea 437) no envuelve el cuerpo en web.minimal_layout y el HTML llega a wkhtmltopdf sin <meta charset>. El arreglo pone <meta charset=\"utf-8\"/> como primer elemento de la plantilla, sin cambiar la geometria, con una prueba que lee el texto del PDF real (roja en 56952c2, verde en 7a85b1b: 0 failed de 1119) y version 19.0.1.1.1. Por ADR-4 la autoridad es foundation, pero foundation no ejecuta pruebas Odoo, asi que el cambio se desarrollo y probo en la copia congelada de odoo-community-tools (PR 246, validate-merge valid, CI verde con --without-demo=all --no-http --test-enable) y se trae aqui en UNA SOLA sincronizacion, como la PR 20. La gobernanza que permitira desarrollar funcionalmente en foundation es la decision D2 y va despues del piloto.",
+    "authorized_by": "Andres Suarez, GO del 2026-09-24 para T-fnd (TASK-000091) sobre PLAN_FIX_KT_LABEL_CHARSET, aprobado el mismo dia",
+    "replaces_initial_receipt": "MIGRATION_RECEIPT_LABEL_V2.json",
+    "previous_foundation_tree": "374a32ca0de2427c0519048851eeb8122e7dfe34",
+    "previous_current_tree_receipt": "development_receipts/kt_label_printing_documentation_20260922_v2.json",
+    "previous_receipts_rewritten": false
+  },
+  "optional_integrations": [],
+  "notes": [
+    "Sincronizacion excepcional ADR-4.5, no una migracion inicial: continua la de la PR 20 (recibo V2). Trae solo la PR 246 de Source: meta charset utf-8 en la Rejilla PDF, su prueba de texto del PDF, CHANGELOG y version 19.0.1.1.1.",
+    "El arbol es identico al de Source en fc80a1f; la capa documental propia de Foundation -seccion de autoridad del README y del manual, website del manifiesto- se reaplica en el commit siguiente, con su recibo post_migration_change de 20260924.",
+    "El recibo V2 y el recibo de arbol actual de 20260922 se conservan intactos y sin referenciar, como historia."
+  ]
+}

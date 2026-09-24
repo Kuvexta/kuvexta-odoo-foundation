@@ -1042,3 +1042,44 @@ class TestKtLabelGridReport(TransactionCase):
         html = self._render(data)
         self.assertEqual(html.count(b"Lote/S/N: X-77"), 1)
         self.assertEqual(self._labels_by_code(html)("7701234500250"), 1)
+
+    # --- texto del PDF real ---------------------------------------------------
+
+    def test_the_pdf_text_keeps_accents_and_enye(self):
+        """El TEXTO del PDF lleva tildes y Ñ tal cual, no «Ã³» ni «Ã‘».
+
+        Las demás pruebas miran el HTML, que ya sale bien: el fallo estaba
+        después, en el PDF (LA-111). Sin `div.article`, `_prepare_html` de
+        Odoo 19 pasa los hijos de `<main>` sin `web.minimal_layout` y, por
+        tanto, sin `<meta charset>`; `_run_wkhtmltopdf` escribe el body en
+        UTF-8 y wkhtmltopdf lo leía como Latin-1. Se genera el PDF con el
+        binario real, por el camino de la recepción, y se lee su texto.
+        """
+        pegante = self._tracked(
+            "Pegante epóxico bicomponente", "PEG-EPO-BI", "7701234500267", "lot"
+        )
+        cano = self._product(
+            'Caño galvanizado 1/2" x 6 m', "CAN-GAL-12", "7701234500274"
+        )
+        cano = cano.product_variant_id
+        picking = self._receipt([(pegante, [("L-ÑAN-01", 2)]), (cano, [(False, 1)])])
+        action = self._receipt_wizard(picking).process()
+        pdf_bytes, content_type = (
+            self.env["ir.actions.report"]
+            .with_context(force_report_rendering=True)
+            ._render_qweb_pdf(
+                action["report_name"],
+                data=self._as_sent_by_the_browser(action["data"]),
+            )
+        )
+        self.assertEqual(content_type, "pdf")
+        reader = PdfFileReader(io.BytesIO(pdf_bytes), strict=False)
+        text = " ".join(
+            " ".join((page.extract_text() or "").split()) for page in reader.pages
+        )
+        self.assertNotIn(
+            "Ã", text, "el texto del PDF sale como Latin-1: %r" % text[:300]
+        )
+        self.assertIn("Pegante epóxico bicomponente", text)
+        self.assertIn('Caño galvanizado 1/2" x 6 m', text)
+        self.assertEqual(text.count("Lote: L-ÑAN-01"), 2)

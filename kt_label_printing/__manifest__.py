@@ -3,14 +3,14 @@
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html)
 {
     "name": "KT Label Printing",
-    "version": "19.0.1.1.0",
+    "version": "19.0.1.1.1",
     "category": "Inventory/Inventory",
     "summary": "Infraestructura genérica y reutilizable para imprimir "
     "etiquetas de producto: tamaños configurables, cálculo de "
     "cuadrícula, y exportación masiva de imágenes",
     "author": "Kuvexta",
     "maintainers": ["Kuvexta"],
-    "website": "https://github.com/Kuvexta/kuvexta-odoo-foundation",
+    "website": "https://github.com/Kuvexta/odoo-community-tools",
     "license": "LGPL-3",
     "development_status": "Beta",
     "depends": [
