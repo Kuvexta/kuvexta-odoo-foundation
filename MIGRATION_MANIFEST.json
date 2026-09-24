@@ -48,6 +48,7 @@
     "kt_payment_gateway_core": "development_receipts/kt_payment_gateway_core_documentation_20260825_v1.json",
     "kt_sales_channel": "development_receipts/kt_sales_channel_documentation_20260825_v1.json",
     "kt_toggle_override": "development_receipts/kt_toggle_override_documentation_20260825_v1.json",
+    "kt_label_printing": "development_receipts/kt_label_printing_documentation_20260924_v3.json",
     "kt_product_public_qr": "development_receipts/kt_product_public_qr_documentation_20260922_v2.json"
   },
   "wave_1": [
